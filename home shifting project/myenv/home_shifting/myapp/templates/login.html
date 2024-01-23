@@ -1,0 +1,294 @@
+{% include "h2.html" %} {% load static %}
+
+<section id="hero" class="position-relative overflow-hidden">
+  <div class="pattern-overlay pattern-right position-absolute">
+    <img
+      src="{% static 'myapp/images/hero-pattern-right.pn' %}g"
+      alt="pattern"
+    />
+  </div>
+  <div class="pattern-overlay pattern-left position-absolute">
+    <img
+      src="{% static 'myapp/images/hero-pattern-left.png' %}"
+      alt="pattern"
+    />
+  </div>
+  <div class="hero-content container text-center">
+    <div class="row">
+      <div class="detail mb-4">
+        <h1 class="">login <span class="text-primary"> </span></h1>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="faq">
+  <div class="container my-5 py-5">
+    <h2 class="text-center my-5">Login<span class="text-primary"></span></h2>
+
+    <div
+      class="accordion col-md-6 offset-md-3"
+      id="accordionPanelsStayOpenExample"
+    >
+      <form class="row g-3">
+        <div class="col-md-12">
+          <label
+            for="exampleInputEmail1"
+            class="form-label fs-6 text-uppercase fw-bold text-black"
+            >Email
+          </label>
+          <input
+            type="Name"
+            class="form-control"
+            id="inputEmail4"
+            placeholder="Enter your Email Address"
+          />
+        </div>
+
+        <div class="col-md-6"></div>
+
+        <div class="col-md-12">
+          <label
+            for="exampleInputEmail1"
+            class="form-label fs-6 text-uppercase fw-bold text-black"
+            >Password
+          </label>
+          <input
+            type="text"
+            class="form-control"
+            placeholder="Enter your Password"
+          />
+        </div>
+
+        <div class="col-md-6"></div>
+
+        <div class="d-grid">
+          <button type="submit" class="btn btn-primary">Submit</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- Login Pop Menu-->
+<div class="tab-content" id="nav-tabContent1">
+  <div
+    class="tab-pane fade"
+    id="nav-sign-in2"
+    role="tabpanel"
+    aria-labelledby="nav-sign-in-tab2"
+  >
+    <form
+      id="form3"
+      class="form-group flex-wrap p-3"
+      action="{% url 'login' %}"
+      method="POST"
+    >
+      {% csrf_token %}
+      <div class="form-input col-lg-12 my-4">
+        <label
+          for="exampleInputEmail3"
+          class="form-label fs-6 text-uppercase fw-bold text-black"
+          >Email Address</label
+        >
+        <input
+          type="text"
+          id="exampleInputEmail3"
+          name="uemail"
+          placeholder="Email"
+          class="form-control ps-3"
+          required
+        />
+      </div>
+      <div class="form-input col-lg-12 my-4">
+        <label
+          for="inputPassword3"
+          class="form-label fs-6 text-uppercase fw-bold text-black"
+          >Password</label
+        >
+        <input
+          type="password"
+          id="inputPassword3"
+          name="ucpassword"
+          placeholder="Password"
+          class="form-control ps-3"
+          aria-describedby="passwordHelpBlock"
+        />
+
+        <div class="form-text text-center">
+          <a href="#" class="password" onclick="showForgotPasswordForm()"
+            >Forgot Password?</a
+          >
+        </div>
+      </div>
+
+      <div class="d-grid my-3">
+        <input
+          type="submit"
+          class="btn btn-primary btn-lg btn-dark text-uppercase btn-rounded-none fs-6"
+          value="Login"
+        />
+      </div>
+    </form>
+  </div>
+
+  <!-- Email Form -->
+  <div id="emailFormSection" style="display: none">
+    <form
+      id="emailForm"
+      class="form-group flex-wrap p-3"
+      onsubmit="showOTPPopup(); return false;"
+    >
+      <div class="form-input col-lg-12 my-4">
+        <label
+          for="forgotEmail"
+          class="form-label fs-6 text-uppercase fw-bold text-black"
+          >Email Address</label
+        >
+        <input
+          type="text"
+          id="forgotEmail"
+          name="forgotEmail"
+          placeholder="Email"
+          class="form-control ps-3"
+          required
+        />
+      </div>
+      <div class="d-grid my-3">
+        <input
+          type="submit"
+          class="btn btn-primary btn-lg btn-dark text-uppercase btn-rounded-none fs-6"
+          value="Send OTP"
+        />
+      </div>
+    </form>
+  </div>
+
+  <!---->
+  <!-- Inside your existing Login Modal -->
+
+  <!-- Email Form -->
+  <div id="emailFormSection" style="display: none">
+    <form
+      id="emailForm"
+      class="form-group flex-wrap p-3"
+      onsubmit="showOTPPopup(); return false;"
+    >
+      <div class="form-input col-lg-12 my-4">
+        <label
+          for="forgotEmail"
+          class="form-label fs-6 text-uppercase fw-bold text-black"
+          >Email Address</label
+        >
+        <input
+          type="text"
+          id="forgotEmail"
+          name="forgotEmail"
+          placeholder="Email"
+          class="form-control ps-3"
+          required
+        />
+      </div>
+      <div class="d-grid my-3">
+        <input
+          type="submit"
+          class="btn btn-primary btn-lg btn-dark text-uppercase btn-rounded-none fs-6"
+          value="Send OTP"
+        />
+      </div>
+    </form>
+  </div>
+
+  <!-- OTP Popup -->
+  <div id="otpPopup" style="display: none">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button
+            type="button"
+            class="btn-close"
+            onclick="hideOTPPopup()"
+            aria-label="Close"
+          ></button>
+        </div>
+        <div class="modal-body">
+          <!-- OTP Form -->
+          <form
+            id="otpForm"
+            class="form-group flex-wrap p-3"
+            onsubmit="showNewPasswordForm(); return false;"
+          >
+            <div class="form-input col-lg-12 my-4">
+              <label
+                for="otp"
+                class="form-label fs-6 text-uppercase fw-bold text-black"
+                >Enter OTP</label
+              >
+              <input
+                type="text"
+                id="otp"
+                name="otp"
+                placeholder="Enter OTP"
+                class="form-control ps-3"
+                required
+              />
+            </div>
+            <div class="d-grid my-3">
+              <input
+                type="submit"
+                class="btn btn-primary btn-lg btn-dark text-uppercase btn-rounded-none fs-6"
+                value="Verify OTP"
+              />
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- New Password Form -->
+  <div id="newPasswordFormSection" style="display: none">
+    <form id="newPasswordForm" class="form-group flex-wrap p-3">
+      <div class="form-input col-lg-12 my-4">
+        <label
+          for="newPassword"
+          class="form-label fs-6 text-uppercase fw-bold text-black"
+          >New Password</label
+        >
+        <input
+          type="password"
+          id="newPassword"
+          name="newPassword"
+          placeholder="New Password"
+          class="form-control ps-3"
+          required
+        />
+      </div>
+      <div class="form-input col-lg-12 my-4">
+        <label
+          for="confirmPassword"
+          class="form-label fs-6 text-uppercase fw-bold text-black"
+          >Confirm Password</label
+        >
+        <input
+          type="password"
+          id="confirmPassword"
+          name="confirmPassword"
+          placeholder="Confirm Password"
+          class="form-control ps-3"
+          required
+        />
+      </div>
+      <div class="d-grid my-3">
+        <input
+          type="button"
+          class="btn btn-primary btn-lg btn-dark text-uppercase btn-rounded-none fs-6"
+          value="Reset Password"
+          onclick="resetPassword()"
+        />
+      </div>
+    </form>
+  </div>
+
+  {% include "footer.html" %}
+</div>
