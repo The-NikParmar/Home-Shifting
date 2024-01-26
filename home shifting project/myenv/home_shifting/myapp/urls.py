@@ -24,9 +24,12 @@ urlpatterns = [
     path('vehical', views.vehical, name='vehical'),
     path('service', views.service, name='service'),
     path('contact', views.contact, name='contact'),
+    path('partners', views.partners, name='partners'),
     path('about', views.about, name='about'),
     path('signup', views.signup, name='signup'),
     path('login', views.login, name='login'),
     path('logout', views.logout, name='logout'),
-    path('new',views.new,name='new'),
+    path('change_pswd', views.change_pswd, name='change_pswd'),
+    path('forget_pswd', views.forget_pswd, name='forget_pswd'),
+    
 ]

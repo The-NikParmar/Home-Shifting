@@ -2,6 +2,10 @@ from django.shortcuts import render,redirect,HttpResponse
 from .models import *
 from django.contrib import messages
 from django.contrib.auth import authenticate,login,logout
+from django.core.mail import send_mail
+
+import random
+
 # Create your views here.
 
 
@@ -66,9 +70,37 @@ def logout(request):
     msg="Logout successfully"
     messages.success(request,msg)
     return redirect('index')
+
+def change_pswd(request): 
+   if request.POST:
+       print("page lode")
+       user=User.objects.get(uemail=request.session['uemail'])
+       
+       if user.ucpassword == request.POST['cu_password']:
+           print("<<<<page lode user cureent password perfect >>>>>>")
+
+           if request.POST['npassword'] == request.POST['cpassword']:
+               print("========Page Loade new password and conifrm password match =========")
+               user.ucpassword = request.POST['cpassword']
+               user.save()
+               return redirect('logout')
+           else:
+                msg = "New Password conifrm  password Does not match..."
+                messages.error(request,msg)
+                return redirect('login')
+       else:
+           msg1="Current Password Does not match !!!"
+           messages.error(request,msg1)
+           return redirect('login') 
+   else:
+       return redirect('login')
+   
+
+def forget_pswd(request):
+   pass
     
+     
 def booking (request):
-    
     return render(request,'booking.html')
 
 def vehical (request):  
@@ -82,5 +114,6 @@ def contact(request):
 
 def about(request):
     return render(request,"about.html")
-def new(request):
-    return render(request,"new.html")
+
+def partners(request):
+    return render(request,"partners.html")
