@@ -17,8 +17,10 @@ def signup(request):
         try:
             user = User.objects.get(uemail = request.POST['uemail'])
             print(">>>>>>>>>>>>> User object : ", user)
-            messages.error(request, "Email already exists!")
+            messages.error(request, msg1)
+            msg1="Email Already Exist !!!"
             return redirect('index')
+        
         except:
             if request.POST['upassword'] == request.POST['ucpassword']:
                 user = User.objects.create(

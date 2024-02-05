@@ -1,0 +1,30 @@
+{% include "header.html" %}
+{% load static %}   
+<section id="hero" class="position-relative overflow-hidden">
+    <div class="pattern-overlay pattern-right position-absolute">
+      <img
+        src="{% static 'myapp/images/hero-pattern-right.png' %}"
+        alt="pattern"
+      />
+    </div>
+    <div class="pattern-overlay pattern-left position-absolute">
+      <img
+        src="{% static 'myapp/images/hero-pattern-left.png' %}"
+        alt="pattern"
+      />
+    </div>
+    <div class="hero-content container text-center">
+      <div class="row">
+        <div class="detail mb-4">
+          <h1 class="">plase login <span class="text-primary"> <a href="{% url 'index' %}">go to index</a></span></h1>
+        </div>
+      </div>
+    </div>
+  </section>
+
+{% include "footer.html" %}
+
+
+
+                            
+<a href="{% url 'logout' %}">{{ request.session.uname }}<br>Logout</a></p>
