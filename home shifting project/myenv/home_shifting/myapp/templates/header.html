@@ -71,6 +71,9 @@
                         <li class="nav-item">
                             <a class="nav-link px-3" href="{% url "contact" %}">Contact</a>
                         </li>
+
+                        
+
                         <li class="nav-item dropdown text-center">
                             <a class="nav-link px-3 dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button"
                                 aria-expanded="false" href="#">Pages <iconify-icon
@@ -78,7 +81,7 @@
                             <ul class="dropdown-menu">
                                 <li><a href="{% url "about" %}" class="dropdown-item text-uppercase ">About <span
                                             class="badge bg-secondary"></span></a></li>
-                                <li><a href="#" class="dropdown-item text-uppercase ">Delivery Partners<span
+                                <li><a href="{% url "dilevry_partners" %}" class="dropdown-item text-uppercase ">Delivery Partners<span
                                             class="badge bg-secondary"></span></a></li>
                             </ul>
                         </li>
@@ -116,7 +119,7 @@
                                         <div class="modal-body">
                                             <!-- Change Password Form -->
                                             <form id="changePasswordForm" class="form-group flex-wrap p-3" action="{% url 'change_pswd' %}" method="POST">
-                                                {% csrf_token %}
+                                                    {% csrf_token %}
                                                 <!-- Add your change password form fields here -->
                                                 <div class="form-input col-lg-12 my-4">
                                                     <label for="currentPassword" class="form-label fs-6 text-uppercase fw-bold text-black">Current Password</label>
@@ -141,77 +144,6 @@
                                     </div>
                                 </div>
                             </div>
-
-
-                                <!-- Forgot Password Modal -->
-                                    <div class="modal fade" id="forgotPasswordModal" tabindex="-1" aria-labelledby="forgotPasswordModalLabel" aria-hidden="true" >
-                                        <div class="modal-dialog modal-dialog-centered">
-                                            <div class="modal-content">
-                                                <div class="modal-header">
-                                                    
-                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" onclick="closeForgotPasswordModal()"></button>
-                                                </div>
-                                                <div class="modal-body" id="forgotPasswordSteps">
-
-                                                    <!-- Step 1: Enter Email -->
-                                                    <div id="step1" >
-                                                        <h3 class="modal-title" id="forgotPasswordModalLabel" action="{% url 'forget_pswd' %}" method="POST">Forgot Password</h3>
-                                                        <form id="forgotPasswordEmailForm" class="form-group flex-wrap p-3">
-                                                            <div class="form-input col-lg-12 my-4">
-                                                                <label for="forgotPasswordEmail" class="form-label fs-6 text-uppercase fw-bold text-black">Email Address</label>
-                                                               
-                                                                <input type="text" id="forgotPasswordEmail" name="forgotPasswordEmail"  class="form-control ps-3" placeholder="Email" value="{{ user.uemail }}">
-                                                            </div>
-                                                            <div class="d-grid my-3">
-                                                                <input type="button" class="btn btn-primary btn-lg btn-dark text-uppercase btn-rounded-none fs-6" value="Send OTP" onclick="sendOTP()">
-                                                            </div>
-                                                            <div class="text-center mt-3">
-                                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" onclick="closeForgotPasswordModal()" >Cancel</button>
-                                                            </div>
-                                                        </form>
-                                                    </div>
-
-                                                    <!-- Step 2: Verify OTP -->
-                                                    <div id="step2" style="display: none;">
-                                                        <h3 class="modal-title" id="forgotPasswordModalLabel">Forgot Password</h3>
-                                                        <form id="verifyOTPForm" class="form-group flex-wrap p-3">
-                                                            <div class="form-input col-lg-12 my-4">
-                                                                <label for="otp" class="form-label fs-6 text-uppercase fw-bold text-black">Enter OTP</label>
-                                                                <input type="text" id="otp" name="otp" placeholder="Enter OTP" class="form-control ps-3" required>
-                                                            </div>
-                                                            <div class="d-grid my-3">
-                                                                <input type="button" class="btn btn-primary btn-lg btn-dark text-uppercase btn-rounded-none fs-6" value="Verify OTP" onclick="verifyOTP()">
-                                                            </div>
-                                                            <div class="text-center mt-3">
-                                                                <button type="button" class="btn btn-secondary" onclick="backToEmailForm()">Back</button>
-                                                            </div>
-                                                        </form>
-                                                    </div>
-
-                                                    <!-- Step 3: Reset Password -->
-                                                    <div id="step3" style="display: none;">
-                                                        <h3 class="modal-title" id="forgotPasswordModalLabel">Reset New Password</h3>
-                                                        <form id="resetPasswordForm" class="form-group flex-wrap p-3">
-                                                            <div class="form-input col-lg-12 my-4">
-                                                                <label for="newPassword" class="form-label fs-6 text-uppercase fw-bold text-black">New Password</label>
-                                                                <input type="password" id="newPassword" name="newPassword" placeholder="New Password" class="form-control ps-3" required>
-                                                            </div>
-                                                            <div class="form-input col-lg-12 my-4">
-                                                                <label for="confirmNewPassword" class="form-label fs-6 text-uppercase fw-bold text-black">Confirm New Password</label>
-                                                                <input type="password" id="confirmNewPassword" name="confirmNewPassword" placeholder="Confirm New Password" class="form-control ps-3" required>
-                                                            </div>
-                                                            <div class="d-grid my-3">
-                                                                <input type="button" class="btn btn-primary btn-lg btn-dark text-uppercase btn-rounded-none fs-6" value="Reset Password" onclick="resetPassword()">
-                                                            </div>
-                                                            <div class="text-center mt-3">
-                                                                <button type="button" class="btn btn-secondary" onclick="backToEmailForm()">Back</button>
-                                                            </div>
-                                                        </form>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
 
 
 
@@ -250,7 +182,7 @@
                                                 <div class="tab-pane fade " id="nav-sign-in2" role="tabpanel"
                                                     aria-labelledby="nav-sign-in-tab2">
                                                     <form id="form3" class="form-group flex-wrap p-3 "  action="{% url 'login' %}" method="POST">
-                                                        {% csrf_token %}
+                                                             {% csrf_token %}
                                                         <div class="form-input col-lg-12 my-4">
                                                             <label for="exampleInputEmail3"
                                                                 class="form-label fs-6 text-uppercase fw-bold text-black">Email
@@ -261,12 +193,12 @@
                                                         <div class="form-input col-lg-12 my-4">
                                                             <label for="inputPassword3"
                                                                 class="form-label  fs-6 text-uppercase fw-bold text-black">Password</label>
-                                                            <input type="password" id="inputPassword3" name = "ucpassword"
+                                                            <input type="password" id="inputPassword3" name = "upassword"
                                                                   placeholder="Password" class="form-control ps-3"
                                                                 aria-describedby="passwordHelpBlock">
                                                             
                                                                 <div class="form-text text-center">
-                                                                    <a href="#" class="password" onclick="showForgotPasswordModal()">Forgot Password?</a>
+                                                                    <a href="{% url "forget_pswd" %}" class="password" >Forgot Password?</a>
                                                                 </div>
                                                         </div>
                                                         <div class="d-grid my-3">

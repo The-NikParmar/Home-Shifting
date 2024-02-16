@@ -25,10 +25,14 @@ urlpatterns = [
     path('service', views.service, name='service'),
     path('contact', views.contact, name='contact'),
     path('about', views.about, name='about'),
+    path('dilevry_partners', views.dilevry_partners, name='dilevry_partners'),
     path('signup', views.signup, name='signup'),
     path('login', views.login, name='login'),
     path('logout', views.logout, name='logout'),
     path('change_pswd', views.change_pswd, name='change_pswd'),
     path('forget_pswd', views.forget_pswd, name='forget_pswd'),
+    path('otp', views.otp, name='otp'),
+    path('resetpass', views.resetpass, name='resetpass'),
+    
     
 ]

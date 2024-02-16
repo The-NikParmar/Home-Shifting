@@ -119,114 +119,33 @@
         });
         {% endif %}
     </script>
-
-
-    <script>
-//=================================================================================== 
-
-    // Function to show the "Forgot Password" modal
-    function showForgotPasswordModal() {
-         
-        // Hide the login form section
-        $('#nav-sign-in2').hide();
-
-        // Hide the sign-up form section
-        $('#exampleModal2').hide();
-        
-        // Show the "Forgot Password" modal
-        $('#forgotPasswordModal').modal('show');
-    }
-
-    // Function to handle "Cancel" in the "Forgot Password" flow
-    function cancelForgotPassword() {
-        // Show the login form
-        
-
-        // Hide the "Forgot Password" modal
-        $('#forgotPasswordModal').modal('hide');
-        window.location.href = '/index';
-    }
-
-    function sendOTP() {
-        // Hide Step 1 and show Step 2
-        $('#step1').hide();
-        $('#step2').show();
-    }
-
-    function verifyOTP() {
-        // Implement OTP verification logic
-        // For demonstration purposes, let's assume OTP is valid
-        // Hide Step 2 and show Step 3
-        $('#step2').hide();
-        $('#step3').show();
-    }
-
-    function resetPassword() {
-        // Implement password reset logic
-        // For demonstration purposes, let's assume the password is reset successfully
-        alert('Password reset successfully!');
-
-        // Reset the forms and hide the modal
-        $('#forgotPasswordEmailForm')[0].reset();
-        $('#verifyOTPForm')[0].reset();
-        $('#resetPasswordForm')[0].reset();
-        $('#step1').show();
-        $('#step2').hide();
-        $('#step3').hide();
-
-        // Close the modal (assuming you're using Bootstrap modal)
-        $('#forgotPasswordModal').modal('hide');
-    }
-
-    function backToEmailForm() {
-        // Reset the forms and show Step 1
-        $('#forgotPasswordEmailForm')[0].reset();
-        $('#verifyOTPForm')[0].reset();
-        $('#resetPasswordForm')[0].reset();
-        $('#step1').show();
-        $('#step2').hide();
-        $('#step3').hide();
-    }
-
-    function closeForgotPasswordModal() {
-        // Reset the forms and hide the modal
-        $('#forgotPasswordEmailForm')[0].reset();
-        $('#verifyOTPForm')[0].reset();
-        $('#resetPasswordForm')[0].reset();
-        $('#step1').show();
-        $('#step2').hide();
-        $('#step3').hide();
-
-        // Close the modal (assuming you're using Bootstrap modal)
-        $('#forgotPasswordModal').modal('hide');
-        window.location.reload(true);
-    }
-
-//================================================Change Password js==================================================================
-        // Function to handle password reset (you need to implement this based on your backend logic)
-        function resetPassword() {
-            // Get the entered new password
-            var newPassword = $('#newPassword').val();
-    
-            // Get the entered confirm password
-            var confirmPassword = $('#confirmPassword').val();
-    
+ 
+        <script>
+        //================================================Change Password js==================================================================
+                // Function to handle password reset (you need to implement this based on your backend logic)
+                function resetPassword() {
+                    // Get the entered new password
+                    var newPassword = $('#newPassword').val();
             
-        }
-        function changePassword() {
-            // Implement your change password logic here
-            // Retrieve values from the change password form using jQuery
-            var currentPassword = $('#currentPassword').val();
-            var newPassword = $('#newPassword').val();
-            var confirmNewPassword = $('#confirmNewPassword').val();
-    
-            // Add your logic for changing the password
-    
-            // After changing the password, you can close the modal
-            $('#changePasswordModal').modal('hide');
-        }
-    </script> 
-
+                    // Get the entered confirm password
+                    var confirmPassword = $('#confirmPassword').val();
+            
+                    
+                }
+                function changePassword() {
+                    // Implement your change password logic here
+                    // Retrieve values from the change password form using jQuery
+                    var currentPassword = $('#currentPassword').val();
+                    var newPassword = $('#newPassword').val();
+                    var confirmNewPassword = $('#confirmNewPassword').val();
+            
+                    // Add your logic for changing the password
+            
+                    // After changing the password, you can close the modal
+                    $('#changePasswordModal').modal('hide');
+                }
+            </script> 
+        
 
 
 
