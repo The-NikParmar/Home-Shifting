@@ -131,7 +131,12 @@
 
               <hr />
               <div class="d-flex justify-content-between">
-                <a href="booking.html" class="btn btn-primary">BOOK now </a>
+                {% if request.session.uemail %}
+                <a href="{% url "booking" %}" class="btn btn-primary">BOOK now </a>
+                {% else %}
+                {{ml}}
+                <a href="{% url 'booking' %}" class="btn btn-primary">BOOK now </a>
+                {% endif %}
               </div>
             </div>
           </div>
@@ -151,7 +156,12 @@
 
               <hr />
               <div class="d-flex justify-content-between">
-                <a href='' class="btn btn-primary">BOOK now </a>
+                {% if request.session.uemail %}
+                <a href='{% url "booking" %}' class="btn btn-primary">BOOK now </a>
+                {% else %}
+                <a href='{% url "booking" %}' class="btn btn-primary">BOOK now </a>
+                  {{msg}}
+                {% endif %}
               </div>
             </div>
           </div>
@@ -170,12 +180,11 @@
               </a>
               <hr />
               <div class="d-flex justify-content-between">
-                {% if request.session.uemail %}        
+                  {% if request.session.uemail %}
                   <a href="{% url 'booking' %}" class="btn btn-primary">BOOK now </a>
-               {% else %}
-                  <a href="{% url 'about' %}" class="btn btn-primary">BOOK now </a>
-                {% endif %}
-                
+                  {% else %}
+                  <a href="{% url 'booking' %}" class="btn btn-primary">BOOK now </a>
+                  {% endif %}
               </div>
             </div>
           </div>
@@ -246,7 +255,7 @@
           </div>
 
           <div class="pricing-button">
-            <a href="booking.html"
+            <a href="{% url "booking" %}"
               ><button class="btn btn-primary">Book now</button></a
             >
           </div>
@@ -282,7 +291,7 @@
           </div>
 
           <div class="pricing-button">
-            <a href="booking.html"
+            <a href="{% url "booking" %}"
               ><button class="btn btn-primary">Book now</button></a
             >
           </div>
@@ -317,7 +326,7 @@
           </div>
 
           <div class="pricing-button">
-            <a href="booking.html"
+            <a href="{% url "booking" %}"
               ><button class="btn btn-primary">Book now</button></a
             >
           </div>
@@ -352,7 +361,7 @@
           </div>
 
           <div class="pricing-button">
-            <a href="booking.html"
+            <a href="{% url "booking" %}"
               ><button class="btn btn-primary">Book now</button></a
             >
           </div>

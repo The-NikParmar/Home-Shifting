@@ -146,9 +146,95 @@
                 }
             </script> 
         
+            
+            <script>
+                document.addEventListener('DOMContentLoaded', function () {
+                    // Get references to the select and price input
+                    var houseTypeSelect = document.getElementById('houseType');
+                    var priceInput = document.getElementById('price');
+            
+                    // Add an event listener to the select element
+                    houseTypeSelect.addEventListener('change', function () {
+                        // Get the selected option
+                        var selectedOption = houseTypeSelect.options[houseTypeSelect.selectedIndex];
+            
+                        // Get the price from the data attribute
+                        var price = selectedOption.getAttribute('data-price');
+            
+                        // Update the price input field
+                        priceInput.value = price;
+                    });
+                });
+            </script>
 
 
 
+
+
+
+
+
+               <!-- Razorpay integration -->
+               <input type="hidden" id="razorpay_order_id" name="razorpay_order_id">
+               <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+               <script>
+                   document.addEventListener('DOMContentLoaded', function () {
+                       var houseTypeSelect = document.getElementById('houseType');
+                       var priceInput = document.getElementById('price');
+                       var razorpayOrderIdInput = document.getElementById('razorpay_order_id');
+
+                       houseTypeSelect.addEventListener('change', function () {
+                           var selectedOption = houseTypeSelect.options[houseTypeSelect.selectedIndex];
+                           var selectedPrice = selectedOption.getAttribute('data-price');
+                           priceInput.value = selectedPrice;
+
+                           // Fetch Razorpay order ID from your Django view
+                           fetch('{% url "booking" %}', {
+                               method: 'POST',
+                               headers: {
+                                   'Content-Type': 'application/json',
+                                   'X-CSRFToken': '{{ csrf_token }}',
+                               },
+                               body: JSON.stringify({
+                                   amount: selectedPrice * 100,  // Convert to paisa
+                               }),
+                           })
+                           .then(response => response.json())
+                           .then(data => {
+                               razorpayOrderIdInput.value = data.order_id;
+                           });
+                       });
+
+                       // Razorpay checkout script
+                       var razorpayOrderID = "{{ order_id }}";  // Replace with the correct template variable
+                       var options = {
+                           key: "{{ settings.RAZORPAY_KEY_ID }}",  // Replace with your actual Razorpay key
+                           amount: {{ amount }},  // Amount in paisa
+                           currency: "{{ currency }}",  // Replace with your currency code
+                           name: "{{ name }}",  // Replace with the user's name or any other identifier
+                           description: "Booking Payment",
+                           order_id: razorpayOrderID,
+                           handler: function (response) {
+                               // Handle the success callback, e.g., update the booking status
+                               // You may want to make an AJAX request to your server to update the payment status
+                               console.log('Payment successful:', response);
+
+
+                           },
+                           prefill: {
+                               name: "{{ name }}",
+                               email: "{{ request.session.uemail }}",  // Replace with the user's email
+                           },
+                       };
+
+                       var rzp = new Razorpay(options);
+                       rzp.open();
+                   });
+               </script>
+            
+
+
+          
    
 
 </body>

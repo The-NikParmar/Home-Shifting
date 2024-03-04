@@ -25,47 +25,51 @@
 
             
             <div class="accordion col-md-8 offset-md-2" id="accordionPanelsStayOpenExample">
-                <form class="row g-3">
+                <form class="row g-3" method="POST" action="{% url "booking" %}">
+                  {% csrf_token %}
                     <div class="col-md-12">
                       <label for="inputEmail4" class="form-label">Name</label>
-                      <input type="Name" class="form-control" id="inputEmail4" placeholder="Name">
+                      <input type="Name" class="form-control" id="inputEmail4" placeholder="Name" name="name">
                     </div>
                     <div class="col-md-12">
-                        <label for="inputEmail4" class="form-label">Select House Type</label>
-                       
-                        <select class="form-select form-control p-3" id="vehicle" aria-label="Default select example"
-                            style="background-image: none;">
-                            <option selected>Select House Type</option>
-                            <option value="1">1 BHK</option>
-                            <option value="2">2 BHK</option>
-                            <option value="3">3 BHK</option>
-                            <option value="4">4 BHK</option>
-                            
-                        </select>
-                      </div>
+                      <label for="inputEmail4" class="form-label">Select House Type</label>
+                      <select class="form-select form-control p-3" id="houseType" aria-label="Default select example" style="background-image: none;" name="htype">
+                          <option value="" >Select House type</option>
+                          <option value="1 BHK" data-price="4000">1 BHK</option>
+                          <option value="2 BHK" data-price="7000">2 BHK</option>
+                          <option value="3 BHK" data-price="9000">3 BHK</option>
+                          <option value="4 BHK" data-price="15000">4 BHK</option>
+                      </select>
+                  </div>
+                  <div class="col-md-12">
+                      <label for="inputEmail4" class="form-label">Price</label>
+                      <input type="text" class="form-control" id="price" placeholder="Price" name="price" readonly>
+                  </div>
 
                       <div class="col-md-12">
                         <label for="inputEmail4" class="form-label">Moving From</label>
-                        <input type="text" class="form-control"  placeholder="Pick-up Location">
+                        <input type="text" class="form-control"  placeholder="Pick-up Location" name="moving_from">
                       </div>
                       <div class="col-md-12">
                         <label for="inputEmail4" class="form-label">Moving To</label>
-                        <input type="text" class="form-control"  placeholder="Drop Location">
+                        <input type="text" class="form-control"  placeholder="Drop Location" name="moving_to">
                       </div>
                 
                      <div class="col-md-12">
                       <label for="inputEmail4" class="form-label">State</label>
-                      <input type="text" class="form-control" placeholder="State" >
+                      <input type="text" class="form-control" placeholder="State" name="state">
                     </div>
                     
                     <div class="col-md-12">
                       <label for="inputZip" class="form-label">Zip</label>
-                      <input type="text" class="form-control" id="inputZip" placeholder="zip code">
+                      <input type="text" class="form-control" id="inputZip" placeholder="zip code" name="zipcode">
                     </div>
                     <div class="d-grid">
-
                       <button type="submit"  class="btn btn-primary  ">Book</button>
                     </div>
+
+
+
                   </form>
             </div>
             

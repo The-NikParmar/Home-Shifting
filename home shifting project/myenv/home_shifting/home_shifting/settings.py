@@ -124,3 +124,7 @@ STATIC_URL = '/static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+# razorypay settings.py
+RAZORPAY_KEY_ID = 'rzp_test_3iCOPLbchUyIwQ'
+RAZORPAY_KEY_SECRET = '162cebPFC0tUFlWw99PsxZp1'
+

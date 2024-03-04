@@ -34,5 +34,4 @@ urlpatterns = [
     path('otp', views.otp, name='otp'),
     path('resetpass', views.resetpass, name='resetpass'),
     
-    
 ]

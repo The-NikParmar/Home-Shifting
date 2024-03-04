@@ -1,11 +1,14 @@
-from django.shortcuts import render,redirect,HttpResponse
+from django.shortcuts import render,redirect
 from .models import *
 from django.contrib import messages
-from django.http import JsonResponse
 from django.contrib.auth import authenticate,login,logout
 from django.core.mail import send_mail
 import random
 import requests
+from django.conf import settings
+from django.urls import reverse
+import razorpay
+
 
 # Create your views here.
 
@@ -175,9 +178,58 @@ def resetpass(request):
          return render(request,'resetpass.html')
        
 
-def booking (request):
-    return render(request,'booking.html')
+def booking(request):
+    if 'uemail' in request.session:
+        if request.POST:
+            userid=User.objects.get(uemail=request.session['uemail'])
+            book = Booking.objects.create(
+                
+                htype = request.POST['htype'],
+                userid = userid,
+                bname = request.POST['name'],
+                movefrom = request.POST['moving_from'],
+                moveto = request.POST['moving_to'],
+                state = request.POST['state'],
+                zipcode = request.POST['zipcode'],
+                price = request.POST['price'],
 
+            )
+            # Calculate the amount in paisa
+            amount = int(book.price) * 1
+
+            # Initialize Razorpay client
+            client = razorpay.Client(auth=(settings.RAZORPAY_KEY_ID, settings.RAZORPAY_KEY_SECRET))
+
+            # Create a Razorpay order
+            order = client.order.create({
+                'amount': amount,
+                'currency': 'INR',  # Update with your currency code
+                'payment_capture': '1'  # Auto-capture payment
+            })
+
+            print(order)
+            # Save the payment_id to the booking instance
+            book.payment_id = order['id']
+            book.save()
+
+            # Pass the order details to the template
+            context = {
+                'order_id': order['id'],
+                'amount': order['amount'],
+                'currency': order['currency'],
+                'name': request.POST['name'],  # Pass any other required details
+            }
+            messages.success(request,"Boooking Placed successfully....")
+            return render(request, 'index.html')
+        else:
+            return render(request,"booking.html")
+    else:
+        messages.info(request, "Please login now.........")
+        return render(request,"booking.html")
+    
+
+
+        
 def vehical (request):  
     return render(request,'vehical.html')
 
