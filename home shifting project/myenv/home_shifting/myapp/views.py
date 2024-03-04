@@ -122,7 +122,7 @@ def forget_pswd(request):
 
             response = requests.request("GET", url, headers=headers, params=querystring)
             msg = "Otp Sent Successfully.........."
-            messages.success(request,msg)
+            print(msg)
             print(response.text)
             request.session['mobile']=mobile
             request.session['otp']=otp
@@ -130,6 +130,7 @@ def forget_pswd(request):
         except Exception as e:
                 print(e)
                 print("===========except page loade==============")
+                msg = "invalid Phone Number  !!!"
                 return render(request,"forget_pswd.html")
     else:
         print("==============================else part run ====================================")

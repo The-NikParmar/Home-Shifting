@@ -110,9 +110,13 @@
 
 <!-- Centered Login Form -->
 <div id="login-form-container" class="container">
+    
     <form id="login-form" class="row g-3 col-md-5 mx-auto" method="post" action="{% url "otp" %}">
         {% csrf_token %}
         <h3 class="modal-title" id="forgotPasswordModalLabel">Forgot Password</h3>
+        {% if msg %}
+		<p style="color:red;">{{msg}}</p>
+	    {% endif %}
         <div class="form-input col-lg-12 my-4">
             <label for="otp" class="form-label fs-6 text-uppercase fw-bold text-black">Enter OTP</label>
             <input type="text" id="otp" name="uotp" placeholder="Enter OTP" class="form-control ps-3" required>

@@ -112,12 +112,14 @@
             <form id="login-form" class="row g-3 col-md-5 mx-auto" method="post" action="{% url "forget_pswd" %}">
                 {% csrf_token %}
                 <h3 class="modal-title my-3" id="forgotPasswordModalLabel" >Forgot Password</h3>
+              
                 <div class="form-input col-12 my-3">
                     <label for="exampleInputEmail1" class="form-label fs-6 text-uppercase fw-bold text-black my-3">Enter Contact Number
                     </label>
                     <input type="text" id="exampleInputEmail1" name="ucontact" placeholder="contact"
                         class="form-control ps-3">
                 </div>
+                
                 <div class="d-grid my-3">
                     <button  type="submit"  class="btn btn-primary btn-lg btn-dark text-uppercase btn-rounded-none fs-6">Send OTP</button>
                 </div>
