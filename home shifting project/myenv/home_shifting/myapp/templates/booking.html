@@ -34,7 +34,7 @@
                     <div class="col-md-12">
                       <label for="inputEmail4" class="form-label">Select House Type</label>
                       <select class="form-select form-control p-3" id="houseType" aria-label="Default select example" style="background-image: none;" name="htype" required>
-                          <option value="" >Select House type</option>
+                          <option value="" data-price="0">Select House type</option>
                           <option value="1 BHK" data-price="4000">1 BHK</option>
                           <option value="2 BHK" data-price="7000">2 BHK</option>
                           <option value="3 BHK" data-price="9000">3 BHK</option>
@@ -43,7 +43,7 @@
                   </div>
                   <div class="col-md-12">
                     <label for="inputEmail4" class="form-label">Price</label>
-                    <input  type="number"   class="form-control" id="price" placeholder="Price" name="price" readonly required>
+                    <input  type="number"   class="form-control" id="price" placeholder="Price" name="price">
                  </div>
                  
 
@@ -74,10 +74,11 @@
                     <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
                     <script>
                       var amountInput = document.getElementById('price');
+                      var houseTypeSelect = document.getElementById('houseType');
                   
                       var options = {
                           "key": "rzp_test_3iCOPLbchUyIwQ",
-                          "amount": 1,  // Set initial amount to 0
+                          "amount": "{{context.amount}}",  // Set initial amount to 0
                           "currency": "INR",
                           "name": "Home Shifting",
                           "description": "Home Shifting Payments",
@@ -104,14 +105,24 @@
                           alert(response.error.metadata.payment_id);
                       });
                   
-                      document.getElementById('rzp-button1').onclick = function (e) {
+                      houseTypeSelect.addEventListener('change', function () {
+                          // Get the selected option
+                          var selectedOption = houseTypeSelect.options[houseTypeSelect.selectedIndex];
+                          // Get the price from the data attribute
+                          var price = selectedOption.getAttribute('data-price');
+                          // Update the price input field
+                          amountInput.value = parseFloat(price);
                           // Update the amount before opening Razorpay
-                          options.amount = parseFloat(amountInput.value) * 100;
+                          options.amount = parseFloat(price) * 100;
+                      });
+                  
+                      document.getElementById('rzp-button1').onclick = function (e) {
                           rzp1.open();
                           e.preventDefault();
                       }
                   </script>
                   
+
                   
 
 

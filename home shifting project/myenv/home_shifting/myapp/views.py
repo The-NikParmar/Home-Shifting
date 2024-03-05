@@ -177,7 +177,6 @@ def resetpass(request):
      else: 
          return render(request,'resetpass.html')
        
-
 def booking(request):
     if 'uemail' in request.session:
         if request.POST:
@@ -196,9 +195,8 @@ def booking(request):
             )
             print(type(book.price))
             # Calculate the amount in paisa
-            amount = int(book.price) * 100,
+            amount = round(float(book.price) * 100)
 
-            
 
             # Initialize Razorpay client
             client = razorpay.Client(auth=(settings.RAZORPAY_KEY_ID, settings.RAZORPAY_KEY_SECRET))
@@ -211,12 +209,10 @@ def booking(request):
                 'currency': 'INR',  # Update with your currency code
                 'payment_capture': '1'  # Auto-capture payment
             })
-
             print(order)
             # Save the payment_id to the booking instance
             book.payment_id = order['id']
             book.save()
-
             # Pass the order details to the template
             context = {
                 'order_id': order['id'],
