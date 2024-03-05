@@ -19,9 +19,9 @@ class Booking(models.Model):
     moveto = models.CharField(max_length=40)
     state = models.CharField(max_length=40)
     zipcode = models.PositiveIntegerField()
-    price = models.IntegerField()
+    price = models.PositiveIntegerField()
     payment_id = models.CharField(max_length = 40)
     paid = models.BooleanField(default = False)
 
     def __str__(self):
-        return  self.bname + " || " + self.htype + " BHK"   
+        return  self.bname + " || " + self.htype   

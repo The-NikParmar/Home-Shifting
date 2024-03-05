@@ -194,11 +194,16 @@ def booking(request):
                 price = request.POST['price'],
 
             )
+            print(type(book.price))
             # Calculate the amount in paisa
-            amount = int(book.price) * 1
+            amount = int(book.price) * 100,
+
+            
 
             # Initialize Razorpay client
             client = razorpay.Client(auth=(settings.RAZORPAY_KEY_ID, settings.RAZORPAY_KEY_SECRET))
+             
+            print(client)
 
             # Create a Razorpay order
             order = client.order.create({
@@ -219,8 +224,9 @@ def booking(request):
                 'currency': order['currency'],
                 'name': request.POST['name'],  # Pass any other required details
             }
+            print("=================================",context)
             messages.success(request,"Boooking Placed successfully....")
-            return render(request, 'index.html')
+            return render(request, 'index.html',{"context": context})
         else:
             return render(request,"booking.html")
     else:
@@ -229,7 +235,6 @@ def booking(request):
     
 
 
-        
 def vehical (request):  
     return render(request,'vehical.html')
 
