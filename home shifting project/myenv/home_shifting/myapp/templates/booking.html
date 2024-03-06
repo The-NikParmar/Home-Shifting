@@ -43,7 +43,7 @@
                   </div>
                   <div class="col-md-12">
                     <label for="inputEmail4" class="form-label">Price</label>
-                    <input  type="number"   class="form-control" id="price" placeholder="Price" name="price">
+                    <input  type="number"   class="form-control" id="price" placeholder="Price" name="price" readonly>
                  </div>
                  
 
@@ -69,64 +69,69 @@
                       <button type="submit"  class="btn btn-primary  " id="rzp-button1">Book</button>
                     </div>
 
+                    <!-- Include Razorpay script -->
+                        <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 
+                        <script>
+                            // Function to initialize Razorpay and handle payment
+                            function initiateRazorpay() {
+                                var amountInput = document.getElementById('price');
+                                var houseTypeSelect = document.getElementById('houseType');
 
-                    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
-                    <script>
-                      var amountInput = document.getElementById('price');
-                      var houseTypeSelect = document.getElementById('houseType');
-                  
-                      var options = {
-                          "key": "rzp_test_3iCOPLbchUyIwQ",
-                          "amount": "{{context.amount}}",  // Set initial amount to 0
-                          "currency": "INR",
-                          "name": "Home Shifting",
-                          "description": "Home Shifting Payments",
-                          "image": "{% static 'images/favicon.png' %}",
-                          "order_id": "{{ context.order_id }}",
-                          "handler": function (response) {
-                              window.location.href = `http://localhost:8000/success?razorpay_payment_id=${response.razorpay_payment_id}&razorpay_order_id=${response.razorpay_order_id}&razorpay_signature=${response.razorpay_signature}`
-                          },
-                          "theme": {
-                              "color": "#3399cc"
-                          }
-                      };
-                  
-                      var rzp1 = new Razorpay(options);
-                  
-                      rzp1.on('payment.failed', function (response) {
-                          // Handle payment failure
-                          alert(response.error.code);
-                          alert(response.error.description);
-                          alert(response.error.source);
-                          alert(response.error.step);
-                          alert(response.error.reason);
-                          alert(response.error.metadata.order_id);
-                          alert(response.error.metadata.payment_id);
-                      });
-                  
-                      houseTypeSelect.addEventListener('change', function () {
-                          // Get the selected option
-                          var selectedOption = houseTypeSelect.options[houseTypeSelect.selectedIndex];
-                          // Get the price from the data attribute
-                          var price = selectedOption.getAttribute('data-price');
-                          // Update the price input field
-                          amountInput.value = parseFloat(price);
-                          // Update the amount before opening Razorpay
-                          options.amount = parseFloat(price) * 100;
-                      });
-                  
-                      document.getElementById('rzp-button1').onclick = function (e) {
-                          rzp1.open();
-                          e.preventDefault();
-                      }
-                  </script>
-                  
+                                // Replace 'your_razorpay_key_id' with your actual Razorpay Key ID
+                                var razorpayKey = 'rzp_test_3iCOPLbchUyIwQ';
 
-                  
+                                var options = {
+                                    "key": razorpayKey,
+                                    "amount": "{{context.amount}}",  // Amount will be dynamically updated based on house type selection
+                                    "currency": "INR",
+                                    "name": "Home Shifting",
+                                    "description": "Home Shifting Payments",
+                                    "image": "{% static 'images/favicon.png' %}",
+                                    "handler": function (response) {
+                                        // Handle the successful payment response
+                                        window.location.href = `http://localhost:8000/success?razorpay_payment_id=${response.razorpay_payment_id}&razorpay_order_id=${response.razorpay_order_id}&razorpay_signature=${response.razorpay_signature}`;
+                                    },
+                                    "theme": {
+                                        "color": "#3399cc"
+                                    }
+                                };
 
+                                var rzp = new Razorpay(options);
 
+                                rzp.on('payment.failed', function (response) {
+                                    // Handle payment failure
+                                    alert(response.error.code);
+                                    alert(response.error.description);
+                                    alert(response.error.source);
+                                    alert(response.error.step);
+                                    alert(response.error.reason);
+                                    alert(response.error.metadata.order_id);
+                                    alert(response.error.metadata.payment_id);
+                                });
 
+                                // Event listener for house type selection change
+                                houseTypeSelect.addEventListener('change', function () {
+                                    var selectedOption = houseTypeSelect.options[houseTypeSelect.selectedIndex];
+                                    var price = selectedOption.getAttribute('data-price');
+
+                                    // Update the price input field
+                                    amountInput.value = parseFloat(price);
+
+                                    // Update the amount before opening Razorpay
+                                    options.amount = parseFloat(price) * 100;
+                                });
+
+                                // Event listener for the 'Book' button click
+                                document.getElementById('rzp-button1').onclick = function (e) {
+                                    rzp.open();
+                                    e.preventDefault();
+                                };
+                            }
+
+                            // Call the function to initialize Razorpay
+                            initiateRazorpay();
+                        </script>
                   </form>
             </div>
             

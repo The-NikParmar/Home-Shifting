@@ -177,57 +177,85 @@ def resetpass(request):
      else: 
          return render(request,'resetpass.html')
        
+# def booking(request):
+#     if 'uemail' in request.session:
+#         if request.POST:
+#             userid=User.objects.get(uemail=request.session['uemail'])
+#             book = Booking.objects.create(
+                
+#                 htype = request.POST['htype'],
+#                 userid = userid,
+#                 bname = request.POST['name'],
+#                 movefrom = request.POST['moving_from'],
+#                 moveto = request.POST['moving_to'],
+#                 state = request.POST['state'],
+#                 zipcode = request.POST['zipcode'],
+#                 price = int(request.POST['price']),
+                
+#             )
+#             print(type(book.price))
+#             print("=================================")
+#             messages.success(request,"Boooking Placed successfully....")
+#             return render(request, 'index.html')
+#         else:
+#             return render(request,"booking.html")
+#     else:
+#         messages.info(request, "Please login now.........")
+#         return render(request,"booking.html")
+    
+def create_razorpay_order(amount):
+    client = razorpay.Client(auth=(settings.RAZORPAY_KEY_ID, settings.RAZORPAY_KEY_SECRET))
+    order = client.order.create({
+        'amount': amount,
+        'currency': 'INR',
+        'payment_capture': '1'
+    })
+    return order
+
 def booking(request):
     if 'uemail' in request.session:
-        if request.POST:
-            userid=User.objects.get(uemail=request.session['uemail'])
-            book = Booking.objects.create(
+        if request.method == 'POST':
+            try:
+                user = User.objects.get(uemail=request.session['uemail'])
                 
-                htype = request.POST['htype'],
-                userid = userid,
-                bname = request.POST['name'],
-                movefrom = request.POST['moving_from'],
-                moveto = request.POST['moving_to'],
-                state = request.POST['state'],
-                zipcode = request.POST['zipcode'],
-                price = request.POST['price'],
+                # Create a Booking instance
+                book = Booking.objects.create(
+                    htype=request.POST['htype'],
+                    userid=user,
+                    bname=request.POST['name'],
+                    movefrom=request.POST['moving_from'],
+                    moveto=request.POST['moving_to'],
+                    state=request.POST['state'],
+                    zipcode=request.POST['zipcode'],
+                    price=int(request.POST['price']),
+                )
+                amount = round(float(request.POST['price']) * 100)
+                # Create Razorpay order
+                order = create_razorpay_order(amount)
 
-            )
-            print(type(book.price))
-            # Calculate the amount in paisa
-            amount = round(float(book.price) * 100)
+                # Save the payment_id to the booking instance
+                book.payment_id = order['id']
+                book.save()
 
+                # Pass order details to the template
+                context = {
+                    'order_id': order['id'],
+                    'amount': amount,
+                    'currency': 'INR',
+                    'name': request.POST['name'],
+                }
 
-            # Initialize Razorpay client
-            client = razorpay.Client(auth=(settings.RAZORPAY_KEY_ID, settings.RAZORPAY_KEY_SECRET))
-             
-            print(client)
-
-            # Create a Razorpay order
-            order = client.order.create({
-                'amount': amount,
-                'currency': 'INR',  # Update with your currency code
-                'payment_capture': '1'  # Auto-capture payment
-            })
-            print(order)
-            # Save the payment_id to the booking instance
-            book.payment_id = order['id']
-            book.save()
-            # Pass the order details to the template
-            context = {
-                'order_id': order['id'],
-                'amount': order['amount'],
-                'currency': order['currency'],
-                'name': request.POST['name'],  # Pass any other required details
-            }
-            print("=================================",context)
-            messages.success(request,"Boooking Placed successfully....")
-            return render(request, 'index.html',{"context": context})
+                messages.success(request, "Booking placed successfully.")
+                return render(request, 'index.html', {"context": context})
+            except (User.DoesNotExist, ValueError, KeyError, razorpay.errors.RazorpayError) as e:
+                messages.error(request, f"Error: {e}")
         else:
-            return render(request,"booking.html")
+            return render(request, "booking.html")
     else:
-        messages.info(request, "Please login now.........")
-        return render(request,"booking.html")
+        messages.info(request, "Please login now.")
+    
+    return render(request, "booking.html")
+
     
 
 
