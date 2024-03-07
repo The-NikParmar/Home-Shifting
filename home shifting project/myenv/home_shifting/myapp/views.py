@@ -2,6 +2,7 @@ from django.shortcuts import render,redirect
 from .models import *
 from django.contrib import messages
 from django.contrib.auth import authenticate,login,logout
+from django.views.decorators.csrf import csrf_exempt
 from django.core.mail import send_mail
 import random
 import requests
@@ -177,86 +178,82 @@ def resetpass(request):
      else: 
          return render(request,'resetpass.html')
        
-# def booking(request):
-#     if 'uemail' in request.session:
-#         if request.POST:
-#             userid=User.objects.get(uemail=request.session['uemail'])
-#             book = Booking.objects.create(
-                
-#                 htype = request.POST['htype'],
-#                 userid = userid,
-#                 bname = request.POST['name'],
-#                 movefrom = request.POST['moving_from'],
-#                 moveto = request.POST['moving_to'],
-#                 state = request.POST['state'],
-#                 zipcode = request.POST['zipcode'],
-#                 price = int(request.POST['price']),
-                
-#             )
-#             print(type(book.price))
-#             print("=================================")
-#             messages.success(request,"Boooking Placed successfully....")
-#             return render(request, 'index.html')
-#         else:
-#             return render(request,"booking.html")
-#     else:
-#         messages.info(request, "Please login now.........")
-#         return render(request,"booking.html")
-    
-def create_razorpay_order(amount):
-    client = razorpay.Client(auth=(settings.RAZORPAY_KEY_ID, settings.RAZORPAY_KEY_SECRET))
-    order = client.order.create({
-        'amount': amount,
-        'currency': 'INR',
-        'payment_capture': '1'
-    })
-    return order
-
 def booking(request):
     if 'uemail' in request.session:
-        if request.method == 'POST':
-            try:
-                user = User.objects.get(uemail=request.session['uemail'])
-                
-                # Create a Booking instance
-                book = Booking.objects.create(
-                    htype=request.POST['htype'],
-                    userid=user,
-                    bname=request.POST['name'],
-                    movefrom=request.POST['moving_from'],
-                    moveto=request.POST['moving_to'],
-                    state=request.POST['state'],
-                    zipcode=request.POST['zipcode'],
-                    price=int(request.POST['price']),
-                )
-                amount = round(float(request.POST['price']) * 100)
-                # Create Razorpay order
-                order = create_razorpay_order(amount)
+        if request.POST:
+            userid = User.objects.get(uemail=request.session['uemail'])
+            price = int(request.POST.get('price'))
+            book = Booking.objects.create(
+                htype=request.POST['htype'],
+                userid=userid,
+                bname=request.POST['name'],
+                movefrom=request.POST['moving_from'],
+                moveto=request.POST['moving_to'],
+                state=request.POST['state'],
+                zipcode=request.POST['zipcode'],
+                price=price
+            )
+            
+            print(type(book.price))
+            print("=================================")
+    
+            client = razorpay.Client(auth = (settings.RAZORPAY_KEY_ID,settings.RAZORPAY_KEY_SECRET))
+            payment = client.order.create({'amount': book.price * 100, 'currency': 'INR', 'payment_capture': 1})
+            book.razorpay_order_id = payment['id']
+            book.save()
 
-                # Save the payment_id to the booking instance
-                book.payment_id = order['id']
-                book.save()
-
-                # Pass order details to the template
-                context = {
-                    'order_id': order['id'],
-                    'amount': amount,
-                    'currency': 'INR',
-                    'name': request.POST['name'],
+            context = {
+                    'payment': payment,
+                    'book':book,  # Ensure the amount is in paise
                 }
+            
+            print("=======================",context)
+            print("&7777777777777777777777",payment)
 
-                messages.success(request, "Booking placed successfully.")
-                return render(request, 'index.html', {"context": context})
-            except (User.DoesNotExist, ValueError, KeyError, razorpay.errors.RazorpayError) as e:
-                messages.error(request, f"Error: {e}")
+
+        
+            return render(request, 'payment.html',context)
         else:
             return render(request, "booking.html")
     else:
-        messages.info(request, "Please login now.")
-    
-    return render(request, "booking.html")
+        messages.info(request, "Please login now.........")
+        return render(request, "booking.html")
 
-    
+
+def payments(request):
+    return render (request,"payment.html")
+
+
+@csrf_exempt
+def payment_success(request):
+    if request.method == 'POST':
+        razorpay_order_id = request.POST.get('razorpay_order_id')
+        razorpay_payment_id = request.POST.get('razorpay_payment_id')
+        razorpay_signature = request.POST.get('razorpay_signature')
+
+        try:
+            # Verify the Razorpay payment
+            client = razorpay.Client(auth=(settings.RAZORPAY_KEY_ID, settings.RAZORPAY_KEY_SECRET))
+            params_dict = {
+                'razorpay_order_id': razorpay_order_id,
+                'razorpay_payment_id': razorpay_payment_id,
+                'razorpay_signature': razorpay_signature,
+            }
+            client.utility.verify_payment_signature(params_dict)
+            
+            # Update the booking status or perform any other necessary actions
+            booking = Booking.objects.get(razorpay_order_id=razorpay_order_id)
+            booking.paid = True 
+            booking.save()
+
+            return HttpResponse("Payment successful")
+        except Exception as e:
+            # Handle verification failure or other exceptions
+            print("Payment verification failed:", str(e))
+            return HttpResponse("Payment verification failed")
+    else:
+        return HttpResponse("Invalid request method")
+
 
 
 def vehical (request):  
