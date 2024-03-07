@@ -129,3 +129,9 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 RAZORPAY_KEY_ID = 'rzp_test_3iCOPLbchUyIwQ'
 RAZORPAY_KEY_SECRET = '162cebPFC0tUFlWw99PsxZp1'
 
+# To Enable Popus in Django or else it will block the payment popup
+
+# Using SECURE_CROSS_ORIGIN_OPENER_POLICY = "same-origin-allow-popups",
+# you will solve the issue  about:blank#blocked which occassionaly occurs in django pop ups
+
+SECURE_CROSS_ORIGIN_OPENER_POLICY = "same-origin-allow-popups"

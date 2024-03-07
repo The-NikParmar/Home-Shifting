@@ -34,6 +34,6 @@ urlpatterns = [
     path('otp', views.otp, name='otp'),
     path('resetpass', views.resetpass, name='resetpass'),
     path('payments', views.payments, name='payments'),
-    path('payment_success', views.payment_success, name='payment_success'),
+    path('success', views.success, name='success'),
     
 ]

@@ -211,7 +211,7 @@ def booking(request):
             print("&7777777777777777777777",payment)
 
 
-        
+            
             return render(request, 'payment.html',context)
         else:
             return render(request, "booking.html")
@@ -224,35 +224,20 @@ def payments(request):
     return render (request,"payment.html")
 
 
-@csrf_exempt
-def payment_success(request):
-    if request.method == 'POST':
-        razorpay_order_id = request.POST.get('razorpay_order_id')
-        razorpay_payment_id = request.POST.get('razorpay_payment_id')
-        razorpay_signature = request.POST.get('razorpay_signature')
+def success(request):
+    
+    book = User.objects.get(uemail = request.session['uemail'])
+    b1 = Booking.objects.filter(book=book)
+    try:
+        if b1.razorpay_order_id == False:
+            b1.paid = True
+            b1.save()
 
-        try:
-            # Verify the Razorpay payment
-            client = razorpay.Client(auth=(settings.RAZORPAY_KEY_ID, settings.RAZORPAY_KEY_SECRET))
-            params_dict = {
-                'razorpay_order_id': razorpay_order_id,
-                'razorpay_payment_id': razorpay_payment_id,
-                'razorpay_signature': razorpay_signature,
-            }
-            client.utility.verify_payment_signature(params_dict)
-            
-            # Update the booking status or perform any other necessary actions
-            booking = Booking.objects.get(razorpay_order_id=razorpay_order_id)
-            booking.paid = True 
-            booking.save()
+        return render(request,"success.html")
+    except Exception as e:
+        print(e)
+        return redirect('index')
 
-            return HttpResponse("Payment successful")
-        except Exception as e:
-            # Handle verification failure or other exceptions
-            print("Payment verification failed:", str(e))
-            return HttpResponse("Payment verification failed")
-    else:
-        return HttpResponse("Invalid request method")
 
 
 

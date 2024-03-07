@@ -26,7 +26,7 @@
             
             <div class="accordion col-md-8 offset-md-2" id="accordionPanelsStayOpenExample">
                 <form class="row g-3" method="POST" action="{% url "booking" %}">
-                  {% csrf_token %}
+                   {% csrf_token %}
                     <div class="col-md-12">
                       <label for="inputEmail4" class="form-label">Name</label>
                       <input type="Name" class="form-control" id="inputEmail4" placeholder="Name" name="name" required>
