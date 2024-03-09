@@ -1,4 +1,4 @@
-from django.shortcuts import render,redirect
+from django.shortcuts import render,redirect,HttpResponse
 from .models import *
 from django.contrib import messages
 from django.contrib.auth import authenticate,login,logout
@@ -8,6 +8,7 @@ import random
 import requests
 from django.conf import settings
 from django.urls import reverse
+from django.shortcuts import get_object_or_404
 import razorpay
 
 
@@ -199,8 +200,11 @@ def booking(request):
     
             client = razorpay.Client(auth = (settings.RAZORPAY_KEY_ID,settings.RAZORPAY_KEY_SECRET))
             payment = client.order.create({'amount': book.price * 100, 'currency': 'INR', 'payment_capture': 1})
-            book.razorpay_order_id = payment['id']
+            book.razorpay_order_id = payment['id']  
             book.save()
+
+            request.session['name']= book.bname
+            print(request.session['name'])
 
             context = {
                     'payment': payment,
@@ -225,21 +229,14 @@ def payments(request):
 
 
 def success(request):
-    
-    book = User.objects.get(uemail = request.session['uemail'])
-    b1 = Booking.objects.filter(book=book)
-    try:
-        if b1.razorpay_order_id == False:
-            b1.paid = True
-            b1.save()
+    booking = Booking.objects.get(bname = request.session['name'])
+    razorpay_payment_id = request.GET.get('razorpay_payment_id')
 
-        return render(request,"success.html")
-    except Exception as e:
-        print(e)
-        return redirect('index')
-
-
-
+    # Update the booking instance with the Razorpay payment ID
+    booking.razorpay_payment_id = razorpay_payment_id
+    booking.paid = True
+    booking.save()
+    return render(request, 'success.html')
 
 def vehical (request):  
     return render(request,'vehical.html')
@@ -254,6 +251,5 @@ def about(request):
     return render(request,"about.html")
 
 
-def dilevry_partners(request):
-    return render(request,"dilevry_partners.html")
+
 

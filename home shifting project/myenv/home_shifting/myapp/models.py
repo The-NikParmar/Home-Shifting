@@ -22,7 +22,7 @@ class Booking(models.Model):
     price = models.PositiveIntegerField()
     razorpay_order_id=models.CharField(max_length=100,null=True,blank=True)
     razorpay_payment_id=models.CharField(max_length=100,null=True,blank=True)
-    razorpay_payment_signature=models.CharField(max_length=100,null=True,blank=True)
+    
     paid = models.BooleanField(default = False)
 
 

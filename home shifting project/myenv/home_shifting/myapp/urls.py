@@ -25,7 +25,6 @@ urlpatterns = [
     path('service', views.service, name='service'),
     path('contact', views.contact, name='contact'),
     path('about', views.about, name='about'),
-    path('dilevry_partners', views.dilevry_partners, name='dilevry_partners'),
     path('signup', views.signup, name='signup'),
     path('login', views.login, name='login'),
     path('logout', views.logout, name='logout'),

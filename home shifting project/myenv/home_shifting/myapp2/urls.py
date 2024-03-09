@@ -1,5 +1,5 @@
 """
-URL configuration for home_shifting project.
+URL configuration for homeshifting project.
 
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/5.0/topics/http/urls/
@@ -14,18 +14,18 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
-from django.contrib import admin
+
 from django.urls import path
-from . import views
+from myapp2 import views
 
 urlpatterns = [
-    path('', views.partner_index, name='partner_index'),
-    path('profile', views.profile, name='profile'),
-    path('Mywalllet', views.Mywallet, name='Mywalllet'),
-    path('dcontact', views.dcontact, name='dcontact'),
-    path('withdrawal_funds', views.withdrawal_funds, name='withdrawal_funds'),
-    path('update', views.update, name='update'),
-    path('plogin', views.plogin, name='plogin'),
-   
-    
+    path('',views.login,name='tlogin'), 
+    path('logout/',views.logout,name='tlogout'), 
+    path('home/',views.home,name='thome'), 
+    path('tsignup/',views.signup,name='tsignup'), 
+    path('Mywallet/',views.Mywallet,name='Mywallet'), 
+    path('contact/',views.contact,name='tcontact'), 
+    path('profile/',views.profile,name='profile'), 
+    path('update/',views.update,name='update'), 
+    path('Withdrawal_funds/',views.Withdrawal_funds,name='Withdrawal_funds'), 
 ]

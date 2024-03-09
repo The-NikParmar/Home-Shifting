@@ -43,8 +43,28 @@
       </div>
         <h1>Success</h1> 
         <p>We received your Booking;<br/> we'll be in touch shortly!</p>
-        <a href="{% url "index" %}">Back to Home</a>
+        <br>
+        <br>
+        <p id="countdown" style="color: rgb(0, 0, 0); text-decoration: underline;">Redirecting in <span id="seconds"><b>3</b></span> seconds...</p>
       </div>
+
+      <script>
+        // Countdown and redirect
+        let secondsLeft = 3;
+
+        function updateCountdown() {
+            document.getElementById('seconds').innerText = secondsLeft;
+            secondsLeft--;
+
+            if (secondsLeft < 0) {
+                window.location.href = '{% url "index" %}';  // Replace with your actual index page URL
+            } else {
+                setTimeout(updateCountdown, 1000);  // Update every 1000 milliseconds (1 second)
+            }
+        }
+
+        setTimeout(updateCountdown, 1000);  // Start the countdown
+    </script>
       
     </body>
 </html>
