@@ -71,7 +71,11 @@
                         <li class="nav-item">
                             <a class="nav-link px-3" href="{% url "contact" %}">Contact</a>
                         </li>
-
+                        {% if request.session.uemail %}
+                        <li class="nav-item">
+                            <a class="nav-link px-3" href="{% url "mybookings" %}">MyBookings</a>
+                        </li>
+                        {% endif %}
                         
 
                         <li class="nav-item dropdown text-center">
@@ -81,7 +85,7 @@
                             <ul class="dropdown-menu">
                                 <li><a href="{% url "about" %}" class="dropdown-item text-uppercase ">About <span
                                             class="badge bg-secondary"></span></a></li>
-                                <li><a href="{% url "dilevry_partners" %}" class="dropdown-item text-uppercase ">Delivery Partners<span
+                                <li><a href="{% url "tsignup" %}" class="dropdown-item text-uppercase ">Delivery Partners<span
                                             class="badge bg-secondary"></span></a></li>
                             </ul>
                         </li>

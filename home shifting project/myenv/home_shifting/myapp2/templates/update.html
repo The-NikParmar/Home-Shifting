@@ -1,0 +1,62 @@
+{% extends 'sheader.html' %}
+{% load static %}
+{% block content %}
+
+
+
+<section class="form-container">
+
+   <form action="{% url 'update' %}" method="post" enctype="multipart/form-data">
+      {% csrf_token %}
+      <h3>update profile</h3>
+      <p>update name</p>
+      <input type="text" name="name" placeholder=" Enter your name" maxlength="50" class="box" value="{{request.session.tname}}">
+      <p>update Mobile Number</p>
+      <input type="text" name="number" placeholder="Enter your contact Number" class="box" value="{{request.session.tcontact}}">
+      <p>update Profile picture</p>
+      <input type="file" name="picture" class="box">
+      <br>
+      <input type="submit" value="update profile" name="submit" class="btn">
+   </form>
+
+   
+      
+      <!--
+      <p>Current password</p>
+      <input type="password" name="current_pass" placeholder="enter your old password" maxlength="20" class="box">
+      <p>new password</p>
+      <input type="password" name="new_pass" placeholder="enter new password" maxlength="20" class="box">
+      <p>confirm password</p>
+      <input type="password" name="c_pass" placeholder="confirm your new password" maxlength="20" class="box">
+      -->
+      
+
+</section>
+
+
+{% endblock %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+<footer class="footer">
+
+   &copy; copyright @ 2024 by <span>Home Shifting</span> | all rights reserved!
+
+</footer>
+
+<!-- custom js file link  -->
+<script src="js/script.js"></script>
+
+   
+</body>
+</html>

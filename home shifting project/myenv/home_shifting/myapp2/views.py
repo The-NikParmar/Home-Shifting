@@ -42,7 +42,7 @@ def signup(request):
         return render(request,"tsignup.html")
 
 def contact(request):
-    return render(request,'contact.html')
+    return render(request,'tcontact.html')
 
 def login(request):
     if request.POST:

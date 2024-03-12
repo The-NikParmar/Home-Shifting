@@ -1,0 +1,62 @@
+{% extends 'sheader.html' %}
+{% load static %}
+{% block content %}
+
+
+<section class="form-container">
+
+   <form action="" method="post" enctype="multipart/form-data">
+      <h3>Withdrawal now</h3>
+      <p>Account holder name <span>*</span></p>
+      <input type="text" name="name" placeholder="enter account holder name" required maxlength="50" class="box">
+
+      <p>Account Number <span>*</span></p>
+      <input type="text" name="name" placeholder="enter your account number" required maxlength="50" class="box">
+
+      <p> Confirm Account Number <span>*</span></p>
+      <input type="text" name="name" placeholder="enter your account number" required maxlength="50" class="box">
+
+      <p>IFSC code <span>*</span></p>
+      <input type="text" name="email" placeholder="enter IFSC code" required maxlength="50" class="box">
+
+      <p>Email <span>*</span></p>
+      <input type="email" name="pass" placeholder="enter your email" required maxlength="20" class="box">
+
+      <p>Mobile Number <span>*</span></p>
+      <input type="text" name="c_pass" placeholder="confirm your mobile number" required maxlength="20" class="box">
+
+      <!-- <p>select profile <span>*</span></p>
+      <input type="file" accept="image/*" required class="box">-->
+      <input type="submit" value="Withdraw now" name="submit" class="btn"> 
+   </form>
+
+</section>
+
+{% endblock %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<footer class="footer">
+
+   &copy; copyright @ 2024 by <span>Home Shifting</span> | all rights reserved!
+
+</footer>
+
+<!-- custom js file link  -->
+<script src="js/script.js"></script>
+
+   
+</body>
+</html>

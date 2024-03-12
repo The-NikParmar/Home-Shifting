@@ -1,14 +1,14 @@
-from django.shortcuts import render,redirect,HttpResponse
+from django.shortcuts import render,redirect,HttpResponse,get_object_or_404
 from .models import *
 from django.contrib import messages
 from django.contrib.auth import authenticate,login,logout
 from django.views.decorators.csrf import csrf_exempt
 from django.core.mail import send_mail
+from django.http import JsonResponse
 import random
 import requests
 from django.conf import settings
 from django.urls import reverse
-from django.shortcuts import get_object_or_404
 import razorpay
 
 
@@ -187,7 +187,7 @@ def booking(request):
             book = Booking.objects.create(
                 htype=request.POST['htype'],
                 userid=userid,
-                bname=request.POST['name'],
+                bname=request.POST['bname'],
                 movefrom=request.POST['moving_from'],
                 moveto=request.POST['moving_to'],
                 state=request.POST['state'],
@@ -203,8 +203,8 @@ def booking(request):
             book.razorpay_order_id = payment['id']  
             book.save()
 
-            request.session['name']= book.bname
-            print(request.session['name'])
+            request.session['bname']= book.bname
+            print(request.session['bname'])
 
             context = {
                     'payment': payment,
@@ -229,14 +229,24 @@ def payments(request):
 
 
 def success(request):
-    booking = Booking.objects.get(bname = request.session['name'])
-    razorpay_payment_id = request.GET.get('razorpay_payment_id')
+   uemail = request.session.get('uemail')
 
-    # Update the booking instance with the Razorpay payment ID
-    booking.razorpay_payment_id = razorpay_payment_id
-    booking.paid = True
-    booking.save()
-    return render(request, 'success.html')
+   if uemail:
+        user = get_object_or_404(User, uemail=uemail)
+        booking = Booking.objects.filter(userid=user).latest('razorpay_order_id')
+
+        razorpay_payment_id = request.GET.get('razorpay_payment_id')
+
+        if razorpay_payment_id:
+            # Update the booking instance with the Razorpay payment ID
+            booking.razorpay_payment_id = razorpay_payment_id
+            booking.save()
+
+        return render(request, 'success.html')
+   else:
+        msg= "Please login....."
+        messages.info(request,msg)
+        return render(request,"index.html")
 
 def vehical (request):  
     return render(request,'vehical.html')
@@ -250,6 +260,16 @@ def contact(request):
 def about(request):
     return render(request,"about.html")
 
+
+def mybookings(request):
+    user = User.objects.get(uemail = request.session['uemail'])
+    user_bookings = Booking.objects.filter(userid=user)
+    return render(request,"mybookings.html",{'user_bookings': user_bookings})
+
+def utrack(request,pk):
+    e = Booking.objects.filter(pk=pk)
+    
+    return render(request, "utrack.html",{'e':e})
 
 
 
