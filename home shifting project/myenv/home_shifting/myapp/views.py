@@ -12,8 +12,6 @@ from django.urls import reverse
 import razorpay
 
 
-# Create your views here.
-
 
 def index (request):
     return render(request,'index.html')
@@ -266,10 +264,21 @@ def mybookings(request):
     user_bookings = Booking.objects.filter(userid=user)
     return render(request,"mybookings.html",{'user_bookings': user_bookings})
 
-def utrack(request,pk):
-    e = Booking.objects.filter(pk=pk)
-    
-    return render(request, "utrack.html",{'e':e})
 
+def utrack(request, pk):
+    booking = get_object_or_404(Booking, pk=pk)
+    context = {'booking': booking}
+    print(context)
+    return render(request, "utrack.html", context)
 
+def cancle(request,pk):
+    booking = Booking.objects.get(pk=pk)
 
+    # Check if the booking is not already canceled
+    if booking.status != 'cancel':
+        # Set the status to 'cancel'
+        booking.status = 'cancel'
+        booking.save()
+
+    # Redirect back to the user's bookings page
+    return redirect('mybookings')

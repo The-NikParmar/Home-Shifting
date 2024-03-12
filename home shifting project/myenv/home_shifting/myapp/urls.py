@@ -36,5 +36,6 @@ urlpatterns = [
     path('success/', views.success, name='success'),
     path('mybookings/',views.mybookings, name='mybookings'),
     path('utrack/ <int:pk>/',views.utrack, name="utrack"),
+    path('cancle/ <int:pk>/',views.cancle, name="cancle"),
     
 ]

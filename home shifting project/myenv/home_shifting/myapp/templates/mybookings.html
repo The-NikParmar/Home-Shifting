@@ -43,13 +43,14 @@
                             <th>Order id</th>
                             <th>Payment id</th>
                             <th>Staus</th>
+                            <th>Action</th>
                             
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
                             {% for i in user_bookings %}
-                            <td>{{i.id}}</td>
+                            <td>{{forloop.counter}}</td>
                             <td>{{i.bname}}</td>
                             <td>{{i.htype}}</td>
                             <td>{{i.movefrom}}</td>
@@ -59,7 +60,8 @@
                             <td>{{i.price}}</td>
                             <td>{{i.razorpay_order_id}}</td>
                             <td>{{i.razorpay_payment_id}}</td>
-                            <td><a href="{% url "utrack" pk=i.pk %}" class="btn btn-primary" title="Track Status">{{i.status}}</a></td>
+                            <td><a href="{% url "utrack" pk=i.pk %}" class="btn btn-success" title="Track Status">CheckStatus</a></td>
+                            <td><a href="{% url 'cancle' pk=i.pk %}" class="btn btn-danger" title="Track Status">Cancle</a></td>
                             
                             
                            
