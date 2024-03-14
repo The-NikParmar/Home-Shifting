@@ -204,6 +204,8 @@ def booking(request):
             request.session['bname']= book.bname
             print(request.session['bname'])
 
+    
+
             context = {
                     'payment': payment,
                     'book':book,  # Ensure the amount is in paise

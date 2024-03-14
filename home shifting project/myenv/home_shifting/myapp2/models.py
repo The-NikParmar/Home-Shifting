@@ -1,5 +1,7 @@
 from django.db import models
 from myapp.models import *
+from django.utils import timezone
+from datetime import timedelta
 # Create your models here.
 
 class Truckpartner(models.Model):
@@ -13,6 +15,18 @@ class Truckpartner(models.Model):
 	t_aadharcard_details = models.CharField(max_length = 30 , unique = True)
 	t_pancard_details = models.CharField(max_length = 30 , unique = True)
 	t_drivinglicence_details = models.CharField(max_length = 30 , unique = True)
-	t_picture = models.ImageField(upload_to="images/" ,default="images/pic-1.jpg")
-	def _str_(self):
-	    return self.t_name + " || " + self.t_contact    	
+	t_picture = models.ImageField(upload_to="images/" ,default="images/pic-1.jpg")	
+
+	#====================================================================================
+	package_type = models.CharField(max_length=20,null=True)
+	price = models.PositiveIntegerField(null=True)
+	razorpay_order_id=models.CharField(max_length=100,null=True,blank=True)
+	razorpay_payment_id=models.CharField(max_length=100,null=True,blank=True)
+	start_date = models.DateTimeField(default=timezone.now)
+	end_date = models.DateTimeField(null = True)
+	truck_type = models.CharField(max_length=20,null = True)
+		
+	def __str__(self):
+		return self.t_name
+	
+	
