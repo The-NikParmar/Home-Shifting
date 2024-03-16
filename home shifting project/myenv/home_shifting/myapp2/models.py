@@ -25,8 +25,14 @@ class Truckpartner(models.Model):
 	start_date = models.DateTimeField(default=timezone.now)
 	end_date = models.DateTimeField(null = True)
 	truck_type = models.CharField(max_length=20,null = True)
+	is_online = models.BooleanField(default=False)
 		
 	def __str__(self):
 		return self.t_name
+	
+	# def save(self, *args, **kwargs):
+	# 	if not self.end_date:  # Check if end_date is not already set
+	# 		self.end_date = self.start_date + timezone.timedelta(days=30)  # Add 30 days to start_date
+	# 		super().save(*args, **kwargs)
 	
 	

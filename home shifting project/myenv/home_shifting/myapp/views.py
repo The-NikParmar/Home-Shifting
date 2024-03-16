@@ -204,8 +204,6 @@ def booking(request):
             request.session['bname']= book.bname
             print(request.session['bname'])
 
-    
-
             context = {
                     'payment': payment,
                     'book':book,  # Ensure the amount is in paise
@@ -213,8 +211,6 @@ def booking(request):
             
             print("=======================",context)
             print("&7777777777777777777777",payment)
-
-
             
             return render(request, 'payment.html',context)
         else:
@@ -267,6 +263,8 @@ def mybookings(request):
     return render(request,"mybookings.html",{'user_bookings': user_bookings})
 
 
+
+
 def utrack(request, pk):
     booking = get_object_or_404(Booking, pk=pk)
     context = {'booking': booking}
@@ -284,3 +282,4 @@ def cancle(request,pk):
 
     # Redirect back to the user's bookings page
     return redirect('mybookings')
+

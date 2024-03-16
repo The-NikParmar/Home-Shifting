@@ -1,6 +1,4 @@
 {% load static %}
-
-<!DOCTYPE html>
 <html lang="en">
 <head>
    <meta charset="UTF-8">
@@ -13,8 +11,14 @@
 
    <!-- custom css file link  -->
    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    
+   <!-- for IE and Android native browser support -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/core-js/2.4.1/core.js"></script>
 
-  
+    <script src="bower_components/sweetalert2/dist/sweetalert2.min.js"></script>
+    <link rel="stylesheet" href="bower_components/sweetalert2/dist/sweetalert2.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 </head>
 <body>
@@ -36,7 +40,10 @@
             <div id="search-btn" class="fas fa-search"></div>
             <div id="user-btn" class="fas fa-user"></div>
             <div id="toggle-btn" class="fas fa-sun"></div>
+           
          </div>
+         
+         
    
          <div class="profile">
             <img src="{{request.session.tpicture}}" class="image" alt="">
@@ -64,6 +71,7 @@
       <h3 class="name">{{request.session.tname}}</h3>
       <p class="role">Delivery Partner</p>
       <a href="{% url 'profile' %}" class="btn">view profile</a>
+      
    </div>
 
    <nav class="navbar">
@@ -79,11 +87,11 @@
 
 {% endblock  %}
 
-<footer class="footer">
+{% comment %} <footer class="footer">
 
     &copy; copyright @ 2024 by <span>Home Shifting</span> | all rights reserved!
  
- </footer>
+ </footer> {% endcomment %}
  
  <!-- custom js file link  -->
  <script src="{% static 'js/script.js' %}"></script>
@@ -145,7 +153,23 @@
         }
     </Script>
 
-   
+    
+
+    <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+    <script>
+        function toggleStatus() {
+            let statusToggle = document.getElementById('online-toggle');
+            let statusText = document.getElementById('statusText');
+
+            if (statusToggle.checked) {
+                // Code to handle online status
+                console.log('Online');
+            } else {
+                // Code to handle offline status
+                console.log('Offline');
+            }
+        }
+    </script>
 
     
  </body>

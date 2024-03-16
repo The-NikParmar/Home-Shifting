@@ -1,13 +1,36 @@
 from django.shortcuts import render,redirect,get_object_or_404
 from django.http import HttpResponse
-from .models import *
+from django.utils import timezone
+from myapp.models import *
+from myapp2.models import *
 from django.contrib import messages
 import razorpay
 from django.conf import settings
 
 # Create your views here.
+
 def home(request):
-    return render(request,'home.html')
+    uemail = request.session.get('uemail')
+    print("============================",uemail)
+    try:
+        user = get_object_or_404(User, uemail=uemail)
+        booking = Booking.objects.filter(userid=user).latest('razorpay_order_id')
+        print("=============================",booking)
+
+        context = {
+            'user':user,
+            'booking':booking
+        }
+
+        truckparner = Truckpartner.objects.get(t_email = request.session['temail'])    
+        if truckparner.razorpay_payment_id:
+            return render(request,"home.html",{"context":context})
+        else:
+            return render(request,"pdetails.html")
+
+    except Exception as e:
+        print(e)
+        return redirect('tlogin')
 
 
 def signup(request):
@@ -27,8 +50,6 @@ def signup(request):
                         t_password=request.POST['password'],
                         t_contact=request.POST['contact'],
                         t_rcnumber=request.POST['rcn'],
-                        # t_packagetype = request.POST['package_type'],
-                        # t_packageprice = request.POST['package_price'],
                         t_aadharcard_details=request.POST['adhaar'],
                         t_pancard_details=request.POST['pan'],
                         t_drivinglicence_details=request.POST['driving'],
@@ -53,18 +74,21 @@ def login(request):
         print(">>>>>>>>>>>>>>>>>page loade login")
         try:
             truckpartner = Truckpartner.objects.get(t_email = request.POST['email'] , t_password = request.POST['pass'])
-            request.session['temail']=truckpartner.t_email
-            request.session['tpassword']=truckpartner.t_password
-            request.session['tname']=truckpartner.t_name
-            request.session['tpicture'] = truckpartner.t_picture.url
-            request.session['tcontact'] = truckpartner.t_contact
+            if truckpartner.razorpay_payment_id:
+                request.session['temail']=truckpartner.t_email
+                request.session['tpassword']=truckpartner.t_password
+                request.session['tname']=truckpartner.t_name
+                request.session['tpicture'] = truckpartner.t_picture.url
+                request.session['tcontact'] = truckpartner.t_contact
             
-            print(">>>>>>>>>session start : ",request.session['temail'])
-            msg1 = "login succesfully done"
-            messages.success(request,msg1)
-            # packages = Package.objects.filter(truck = truckpartner)
-            # if packages.razorpay_order_id:
-            return render(request,"home.html")
+                print(">>>>>>>>>session start : ",request.session['temail'])
+                msg1 = "login succesfully done"
+                messages.success(request,msg1)
+                # packages = Package.objects.filter(truck = truckpartner)
+                # if packages.razorpay_order_id:
+                return render(request,"home.html")
+            else:
+                return redirect('pdetails')
         except: 
             msg="Your email or password is not match !!!!"
             messages.error(request,msg)
@@ -152,6 +176,8 @@ def packages(request):
             truck.price = price
             truck.package_type = request.POST['ptype']
             truck.truck_type = request.POST['vtype']
+            truck.start_date = timezone.now().date()
+            truck.end_date = truck.start_date + timezone.timedelta(days=30)
             print('==========truckprice',truck.price)
 
             #request.session['email'] = request.POST['email']
@@ -168,6 +194,7 @@ def packages(request):
                     'truck':truck,  # Ensure the amount is in paise
                 }
             print(context)
+        
             return render(request,'payments.html',context)
 
         except Exception as e:

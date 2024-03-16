@@ -1274,11 +1274,6 @@ section{
    margin: 1rem 0;
 }
 
-
-
-
-
-
 .footer{
    background-color: var(--white);
    border-top: var(--border);
@@ -1415,4 +1410,5 @@ section{
      width: 100%; /* You can adjust this as needed for responsiveness */
    }
  }
+ 
  

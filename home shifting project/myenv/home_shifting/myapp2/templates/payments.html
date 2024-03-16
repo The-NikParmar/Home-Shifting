@@ -196,13 +196,11 @@ tfoot {
       
         <form action="https://httpbin.org/post" class="form" method="POST">
           <div>
-            <h2>Pacakge Details</h2>
+            <h2>Package Details</h2>
       
             <div class="card">
-              <address>
-                {{pk.package_name}}<br />
-                403 Oakland Ave Street, A city, Florida, 32104,<br />
-                United States of America
+              <address style="text-align: center; font-size:2rem">
+                {{truck.package_type}}<br/>
               </address>
             </div>
           </div>
@@ -216,22 +214,19 @@ tfoot {
             <table>
               <tbody>
                 <tr>
-                  <td>Shipping fee</td>
-                  <td align="right">$5.43</td>
+                  <td style="color:black">Start Date</td>
+                  <td align="right" style="color:black">{{truck.start_date}}</td>
                 </tr>
                 <tr>
-                  <td>Discount 10%</td>
-                  <td align="right">-$1.89</td>
+                  <td style="color:black"> Expiry Date</td>
+                  <td align="right" style="color:black">{{truck.end_date}}</td>
                 </tr>
-                <tr>
-                  <td>Price Total</td>
-                  <td align="right">$84.82</td>
-                </tr>
+                
               </tbody>
               <tfoot>
                 <tr>
-                  <td>Total</td>
-                  <td align="right">{{pk.price}}</td>
+                  <td>Package Price</td>
+                  <td align="right">{{truck.price}}</td>
                 </tr>
               </tfoot>
             </table>

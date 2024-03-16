@@ -1,19 +1,56 @@
 {% extends 'sheader.html' %}
 {% load static %}
 {% block content %}
+<head>
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>Accept or Reject</title>
+   <style>
+       /* Styles for the pop-up */
+       .popup {
+           display: none;
+           position: fixed;
+           top: 0;
+           left: 0;
+           width: 100%;
+           height: 100%;
+           background-color: rgba(0,0,0,0.5);
+           z-index: 999;
+       }
+       .popup-content {
+           position: absolute;
+           top: 50%;
+           left: 50%;
+           transform: translate(-50%, -50%);
+           background-color: white;
+           padding: 20px;
+           border-radius: 5px;
+           width: 300px;
+       }
+   </style>
+   </head>
 
-
-<section class="teacher-profile">
-
-
-
+{% comment %} <section class="teacher-profile">
    <div class="details" style="height: 60rem; box-shadow: 1px 1px 2px 1px #aaaaaa;">
-      <div class="tutor">
-         
-        
-      </div>
       
    </div>
+</section> {% endcomment %}
+
+<section class="form-container" >
+
+   <form>
+      <h3>Ride details</h3>
+      <p>User name : {{context.booking.bname}}</p>
+      <p>Move contact number : {{context.user.ucontact}}</p>
+      <p>House Type : {{context.booking.htype}}</p>
+      <p>Move From : {{context.booking.movefrom}}</p>
+      <p>Move To : {{context.booking.moveto}}</p>
+      <p>state : {{context.booking.state}}</p>
+      
+      <a href="" class="btn">accept</a>
+      <a href="" class="option-btn">reject</a>
+   
+   </form>
 
 </section>
 
@@ -64,5 +101,6 @@
 
 </section>
 -->
+
 
 {% endblock %}
