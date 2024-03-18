@@ -32,4 +32,5 @@ urlpatterns = [
     path('payments/',views.payments,name='payments'), 
     path('pdetails/',views.pdetails,name='pdetails'), 
     path('tsuccess/', views.tsuccess, name='tsuccess'),
+    
 ]

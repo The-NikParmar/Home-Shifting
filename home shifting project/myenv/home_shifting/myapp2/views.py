@@ -1,5 +1,4 @@
 from django.shortcuts import render,redirect,get_object_or_404
-from django.http import HttpResponse
 from django.utils import timezone
 from myapp.models import *
 from myapp2.models import *
@@ -16,7 +15,6 @@ def home(request):
         user = get_object_or_404(User, uemail=uemail)
         booking = Booking.objects.filter(userid=user).latest('razorpay_order_id')
         print("=============================",booking)
-
         context = {
             'user':user,
             'booking':booking
@@ -80,6 +78,11 @@ def login(request):
                 request.session['tname']=truckpartner.t_name
                 request.session['tpicture'] = truckpartner.t_picture.url
                 request.session['tcontact'] = truckpartner.t_contact
+
+                if truckpartner:
+                    truckpartner.is_online = True
+                    truckpartner.save()
+                    print("===============is online ============")
             
                 print(">>>>>>>>>session start : ",request.session['temail'])
                 msg1 = "login succesfully done"
@@ -88,7 +91,7 @@ def login(request):
                 # if packages.razorpay_order_id:
                 return render(request,"home.html")
             else:
-                return redirect('pdetails')
+                return redirect('pdetails') 
         except: 
             msg="Your email or password is not match !!!!"
             messages.error(request,msg)
@@ -97,6 +100,11 @@ def login(request):
         return render(request,'login.html')
 
 def logout(request):
+    truckparner = Truckpartner.objects.get(t_email = request.session['temail'])
+    if truckparner:
+        truckparner.is_online = False
+        truckparner.save()
+        print("==========================this is offline ")
     del request.session['temail']
     del request.session['tpassword']
     del request.session['tname']
@@ -213,14 +221,14 @@ def pdetails(request):
 def tsuccess(request):
     try:
         truck = Truckpartner.objects.get(t_email = request.session['tpemail'])
-
         print('========================================',truck.t_email)
 
-        truck.razorpay_payment_id = request.GET.get('razorpay_payment_id')
 
+        truck.razorpay_payment_id= request.GET.get('razorpay_payment_id')
         print('========================================',truck.razorpay_payment_id)
         truck.save()
         return render(request, 'tsuccess.html')
     except Exception as e:
         print(e)
         return render(request, 'tsuccess.html')
+    

@@ -26,6 +26,7 @@ class Truckpartner(models.Model):
 	end_date = models.DateTimeField(null = True)
 	truck_type = models.CharField(max_length=20,null = True)
 	is_online = models.BooleanField(default=False)
+	on_work = models.BooleanField(default = False)
 		
 	def __str__(self):
 		return self.t_name
