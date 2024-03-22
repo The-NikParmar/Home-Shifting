@@ -250,7 +250,7 @@ def vehical (request):
 def service (request):
     return render(request,'service.html')
 
-def contact(request):
+def user_contact(request):
     if request.POST:
         contact = Contact.objects.create(
             name = request.POST['name'],

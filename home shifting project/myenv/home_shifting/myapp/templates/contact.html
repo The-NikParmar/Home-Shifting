@@ -24,7 +24,7 @@
         <h2 class="text-center my-5">GOT ANY QUESTIONS?<span class="text-primary"></span> </h2>
 
         <div class="accordion col-md-6 offset-md-3" id="accordionPanelsStayOpenExample">
-            <form method="POST" action="{% url 'contact' %}" class="row g-3">
+            <form method="POST" action="{% url 'user_contact' %}" class="row g-3">
                 {% csrf_token %}
                 <div class="col-md-12">
                     <label for="inputName" class="form-label fs-6 text-uppercase fw-bold text-black">Name</label>

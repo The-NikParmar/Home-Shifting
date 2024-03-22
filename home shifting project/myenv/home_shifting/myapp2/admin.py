@@ -5,4 +5,5 @@ from .models import *
 admin.site.register(Truckpartner)
 admin.site.register(Rides)
 admin.site.register(Transactions)
+admin.site.register(Contact)
 

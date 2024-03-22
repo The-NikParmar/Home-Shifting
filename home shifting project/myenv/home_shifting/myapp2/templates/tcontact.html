@@ -10,14 +10,15 @@
          <img src="{% static 'images/Loading workman carrying boxes.jpg' %}" alt="">
       </div>
 
-      <form action="" method="post">
+      <form action="{% url 'tcontact' %}" method="post">
+         {% csrf_token %}
          <h3>get in touch</h3>
          <input type="text" placeholder="enter your name" name="name" required maxlength="50" class="box">
          <input type="email" placeholder="enter your email" name="email" required maxlength="50" class="box">
-         <input type="number" placeholder="enter your number" name="number" required maxlength="50" class="box">
+         <input type="tel" placeholder="enter your number" name="number" required maxlength="50" class="box">
          <textarea name="msg" class="box" placeholder="enter your message" required maxlength="1000" cols="30" rows="10"></textarea>
          <input type="submit" value="send message" class="inline-btn" name="submit">
-      </form>
+       </form>
 
    </div>
 

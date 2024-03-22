@@ -145,7 +145,17 @@ def signup(request):
         return render(request,"tsignup.html")
 
 def contact(request):
-    return render(request,'tcontact.html')
+    if request.POST:
+        contact = Contact.objects.create(
+            name = request.POST['name'],
+            email = request.POST['email'],
+            number = request.POST['number'],
+            message = request.POST['msg']
+        )
+        contact.save()
+        return render(request,'tcontact.html')
+    else:
+        return render(request,"tcontact.html")
 
 def login(request):
     if request.POST:
@@ -240,16 +250,17 @@ def profile(request):
     truckpartner = Truckpartner.objects.get(t_email = request.session['temail'])
     ride = Rides.objects.get(truckpartner = truckpartner)
     current_datetime = timezone.now()
-
-    if current_datetime >= ride.expiry_time:
+    if ride.expiry_time is not None:
+        if current_datetime >= ride.expiry_time:
             # If last ride was more than 24 hours ago, reset today's earnings to 0
-        ride.today_earning = 0
-        ride.save()
-    print(ride.today_earning)
-    return render(request,'profile.html',{"truckpartner":truckpartner , 'ride':ride})
-    
-    
-    
+            ride.today_earning = 0
+            ride.save()
+        print(ride.today_earning)
+        return render(request,'profile.html',{"truckpartner":truckpartner , 'ride':ride})
+    else:
+        return render(request,'profile.html',{"truckpartner":truckpartner , 'ride':ride})
+
+  
 def Withdrawal_funds(request):
     try:
         truckpartner = Truckpartner.objects.get(t_email = request.session['temail'])
