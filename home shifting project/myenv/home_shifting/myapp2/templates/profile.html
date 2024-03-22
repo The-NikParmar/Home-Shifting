@@ -39,7 +39,7 @@
             <div class="flex">
                <i class="fas fa-bookmark"></i>
                <div>
-                  <span>4</span>
+                  <span>{{ride.total_trip}}</span>
                   <p>Total Trip</p>
                </div>
             </div>
@@ -50,7 +50,7 @@
             <div class="flex">
                <i class="fa-solid fa-indian-rupee-sign"></i>
                <div>
-                  <span>33</span>
+                  <span>{{ride.today_earning}}</span>
                   <p>Today Erning</p>
                </div>
             </div>
@@ -61,7 +61,7 @@
             <div class="flex">
                <i class="fa-solid fa-indian-rupee-sign"></i>
                <div>
-                  <span>12</span>
+                  <span>{{ride.total_earning}}</span>
                   <p>Total Erning</p>
                </div>
             </div>
@@ -70,8 +70,6 @@
    
       </div>
    </div>
-
-</section>
 
 
 {% endblock %}

@@ -3,6 +3,7 @@
 {% block content %}
 
 
+
 <section class="comments">
 
    <section class="user-profile">
@@ -19,7 +20,7 @@
                   <i class="fa-solid fa-indian-rupee-sign"></i>
 
                 <div>
-                     <span>4000</span>
+                     <span>{{ride.today_earning}}</span>
                      <p>Today Ernig</p>
                   </div>
                </div>
@@ -30,7 +31,7 @@
                <div class="flex">
                   <i class="fa-solid fa-indian-rupee-sign"></i>
                   <div>
-                     <span>8000</span>
+                     <span>{{ride.total_earning}}</span>
                      <p>Total Erning</p>
                   </div>
                </div>
@@ -41,7 +42,7 @@
                <div class="flex">
                   <i class="fa-solid fa-indian-rupee-sign"></i>
                   <div>
-                     <span>8000</span>
+                     <span>{{a}}</span>
                      <p>Withdraw Amount</p>
                   </div>
                </div>
@@ -49,7 +50,7 @@
             </div>
             
          <div class="user">
-            <a href="{% url "Withdrawal_funds" %}" class="inline-btn " >Withdraw Funds</a>
+            <a href="{% url 'Withdrawal_funds' %}" class="inline-btn " >Withdraw Funds</a>
          </div>
       
          </div>
@@ -75,79 +76,22 @@
          </form>
       </div>-->
 
+      {% for i in transactions %}
       <div class="box" >
          <div class="user" >
             <img src="{% static 'images/pic-1.jpg' %}" alt="">
             <div>
-               <h3>john deo</h3>
-               <span>22-10-2024</span>
+               <h3>{{i.account_holder_name}}</h3>
+               <span>{{i.date}}</span>
             </div>
          </div>
          <div class="comment-box" style="box-shadow: 1px 1px 2px 1px #aaaaaa;">
-            <h4>SBI bank</h4>
-            <h5>Trsaction id 234567654 <span style="float: right;"><i class="fa-solid fa-indian-rupee-sign"> 2000</span></h5></i>
+            {% comment %} <h4>SBI bank</h4> {% endcomment %}
+            <h5>Trsaction id {{i.account_number}} <span style="float: right;"><i class="fa-solid fa-indian-rupee-sign"> {{i.amount}}</span></h5></i>
          </div>
       </div>
-
-      <div class="box">
-         <div class="user">
-            <img src="{% static 'images/pic-1.jpg' %}" alt="">
-            <div>
-               <h3>john deo</h3>
-               <span>22-10-2024</span>
-            </div>
-         </div>
-         <div class="comment-box" style="box-shadow: 1px 1px 2px 1px #aaaaaa;">
-            <h4>SBI bank</h4>
-            <h5>Trsaction id 234567654 <span style="float: right;"><i class="fa-solid fa-indian-rupee-sign"> 2000</span></h5></i>
-         </div>
-      </div>
-
-      <div class="box">
-         <div class="user">
-            <img src="{% static 'images/pic-1.jpg' %}" alt="">
-            <div>
-               <h3>john deo</h3>
-               <span>22-10-2024</span>
-            </div>
-         </div>
-         <div class="comment-box" style="box-shadow: 1px 1px 2px 1px #aaaaaa;">
-            <h4>SBI bank</h4>
-            <h5>Trsaction id 234567654 <span style="float: right;"><i class="fa-solid fa-indian-rupee-sign"> 2000</span></h5></i>
-         </div>
-      </div>
-
-      <div class="box">
-         <div class="user">
-            <img src="{% static 'images/pic-1.jpg' %}" alt="">
-            <div>
-               <h3>john deo</h3>
-               <span>22-10-2024</span>
-            </div>
-         </div>
-         <div class="comment-box" style="box-shadow: 1px 1px 2px 1px #aaaaaa;">
-            <h4>SBI bank</h4>
-            <h5>Trsaction id 234567654 <span style="float: right;"><i class="fa-solid fa-indian-rupee-sign"> 2000</span></h5></i>
-         </div>
-      </div>
-
-      <div class="box">
-         <div class="user">
-            <img src="{% static 'images/pic-1.jpg' %}" alt="">
-            <div>
-               <h3>john deo</h3>
-               <span>22-10-2024</span>
-            </div>
-         </div>
-         <div class="comment-box" style="box-shadow: 1px 1px 2px 1px #aaaaaa;">
-            <h4>SBI bank</h4>
-            <h5>Trsaction id 234567654 <span style="float: right;"><i class="fa-solid fa-indian-rupee-sign"> 2000</span></h5></i>
-         </div>
-      </div>
-
+      {% endfor %}
    </div>
 
 </section>
-
-
 {% endblock %}

@@ -251,7 +251,17 @@ def service (request):
     return render(request,'service.html')
 
 def contact(request):
-    return render(request,"contact.html")
+    if request.POST:
+        contact = Contact.objects.create(
+            name = request.POST['name'],
+            email = request.POST['email'],
+            contact_number = request.POST['contact_number'],
+            message = request.POST['message']
+        )
+        contact.save()
+        return render(request,"contact.html")
+    else:
+        return render(request,"contact.html")       
 
 def about(request):
     return render(request,"about.html")

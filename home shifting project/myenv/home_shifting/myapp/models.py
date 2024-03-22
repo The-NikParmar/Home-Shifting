@@ -7,8 +7,6 @@ class User(models.Model):
     ucontact = models.CharField(max_length=15)
     upassword = models.CharField(max_length=40)
     
-    
-
     def __str__(self):
         return  self.uname + " || " + self.uemail   
     
@@ -27,6 +25,7 @@ class Booking(models.Model):
     razorpay_order_id=models.CharField(max_length=100,null=True,blank=True)
     razorpay_payment_id=models.CharField(max_length=100,null=True,blank=True)
     status = models.CharField(max_length=20,choices = ORDERSTATUS,default="Booking")
+    statuscheck = models.BooleanField(default = False)
 
     # Add flags for statuses
     house_type_active = models.BooleanField(default=False)
@@ -53,3 +52,13 @@ class Booking(models.Model):
 
     def __str__(self):
         return  self.bname + " || " + self.htype   
+
+
+class Contact(models.Model):
+    name = models.CharField(max_length=100)
+    email = models.EmailField()
+    contact_number = models.CharField(max_length=15)
+    message = models.TextField()
+
+    def __str__(self):
+        return self.name

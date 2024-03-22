@@ -1,108 +1,39 @@
 {% extends 'sheader.html' %}
 {% load static %}
 {% block content %}
-<head>
-   <meta charset="UTF-8">
-   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-   <title>Accept or Reject</title>
-   <style>
-       /* Styles for the pop-up */
-       .popup {
-           display: none;
-           position: fixed;
-           top: 0;
-           left: 0;
-           width: 100%;
-           height: 100%;
-           background-color: rgba(0,0,0,0.5);
-           z-index: 999;
-       }
-       .popup-content {
-           position: absolute;
-           top: 50%;
-           left: 50%;
-           transform: translate(-50%, -50%);
-           background-color: white;
-           padding: 20px;
-           border-radius: 5px;
-           width: 300px;
-       }
-   </style>
-   </head>
 
   
 
-{% comment %} <section class="teacher-profile">
-   <div class="details" style="height: 60rem; box-shadow: 1px 1px 2px 1px #aaaaaa;">
-      
-   </div>
-</section> {% endcomment %}
 
- <section class="form-container" >
+
+<section class="form-container" >
 
    <form>
-      <h3>Ride details</h3>
-      <p>User name : {{context.booking.bname}}</p>
-      <p>Move contact number : {{context.user.ucontact}}</p>
-      <p>House Type : {{context.booking.htype}}</p>
-      <p>Move From : {{context.booking.movefrom}}</p>
-      <p>Move To : {{context.booking.moveto}}</p>
-      <p>state : {{context.booking.state}}</p>
       
-      <a href="#" class="btn">accept</a>
-      <a href="#" class="option-btn">reject</a>
-   
+      {% if booking %}
+
+        {% if booking.status != 'finish' %}
+         <h3>Ride details</h3>
+         <p>Move From : {{booking.movefrom}}</p>
+         <p>Move To : {{booking.moveto}}</p>
+         
+         <a href="{% url "accept" %}" class="btn">accept</a>
+         <a href="{% url "reject" %}" class="option-btn">reject</a>
+         {% else %}
+            <h1 style="text-align: center;">NO RIDE  AVAILABLE!</h1>
+         {% endif %}
+      {% else %}
+      <h1 style="text-align: center;">NO RIDE  AVAILABLE!</h1>
+      {% endif %}
    </form>
 
+   
+   
 </section> 
 
-<!--
-<section class="courses">
-
-   <h1 class="heading">our courses</h1>
-
-   <div class="box-container">
-
-      <div class="box">
-         <div class="thumb">
-            <img src="images/thumb-1.png" alt="">
-            <span>10 videos</span>
-         </div>
-         <h3 class="title">complete HTML tutorial</h3>
-         <a href="playlist.html" class="inline-btn">view playlist</a>
-      </div>
-
-      <div class="box">
-         <div class="thumb">
-            <img src="images/thumb-2.png" alt="">
-            <span>10 videos</span>
-         </div>
-         <h3 class="title">complete CSS tutorial</h3>
-         <a href="playlist.html" class="inline-btn">view playlist</a>
-      </div>
-
-      <div class="box">
-         <div class="thumb">
-            <img src="images/thumb-3.png" alt="">
-            <span>10 videos</span>
-         </div>
-         <h3 class="title">complete javascript tutorial</h3>
-         <a href="playlist.html" class="inline-btn">view playlist</a>
-      </div>
-
-      <div class="box">
-         <div class="thumb">
-            <img src="images/thumb-4.png" alt="">
-            <span>10 videos</span>
-         </div>
-         <h3 class="title">complete Boostrap tutorial</h3>
-         <a href="playlist.html" class="inline-btn">view playlist</a>
-      </div>
-
-   </div>
-
-</section>
--->
 
 
-{% endblock %}
+
+
+
+{% endblock %} 

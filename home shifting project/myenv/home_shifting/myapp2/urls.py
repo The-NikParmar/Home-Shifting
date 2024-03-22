@@ -32,5 +32,11 @@ urlpatterns = [
     path('payments/',views.payments,name='payments'), 
     path('pdetails/',views.pdetails,name='pdetails'), 
     path('tsuccess/', views.tsuccess, name='tsuccess'),
+    path('accept/', views.accept, name='accept'),
+    path('reject/',views.reject,name='reject'), 
+    path('tsuccess/', views.tsuccess, name='tsuccess'),
+    path('finishride/', views.finishride, name='finishride'),
+    path('changepassword/', views.changepassword, name='changepassword'),
+
     
 ]

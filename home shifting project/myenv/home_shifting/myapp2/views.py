@@ -9,27 +9,107 @@ from django.conf import settings
 # Create your views here.
 
 def home(request):
-    uemail = request.session.get('uemail')
-    print("============================",uemail)
     try:
+        uemail = request.session.get('uemail')
         user = get_object_or_404(User, uemail=uemail)
         booking = Booking.objects.filter(userid=user).latest('razorpay_order_id')
-        print("=============================",booking)
-        context = {
-            'user':user,
-            'booking':booking
-        }
-
-        truckparner = Truckpartner.objects.get(t_email = request.session['temail'])    
-        if truckparner.razorpay_payment_id:
-            return render(request,"home.html",{"context":context})
-        else:
-            return render(request,"pdetails.html")
-
+        print("===========-----------------------",booking.htype)
+        truckpartner = Truckpartner.objects.get(t_email=request.session['temail'])
+        print(truckpartner.package_type)
+        if truckpartner.is_online == True:
+            if booking.statuscheck == False:
+                if booking.status != 'finish':
+                    # uemail = request.session.get('email')
+                    # user = get_object_or_404(User, uemail=uemail)
+                    # booking = Booking.objects.filter(userid=user).latest('razorpay_order_id')
+                    if booking.htype in ['2 BHK'] and truckpartner.package_type in ['Silver','Gold','Platinum']:
+                        print("----------------")
+                        return render(request, "home.html", {'user': user, "booking": booking, "truckpartner": truckpartner})
+                    elif booking.htype in ['1 BHK'] and truckpartner.package_type in ['Silver', 'Platinum']:
+                        return render(request, "home.html", {'user': user, "booking": booking, "truckpartner": truckpartner}) 
+                    elif booking.htype in ['3 BHK'] and truckpartner.package_type in ['Gold', 'Platinum']:
+                        return render(request, "home.html", {'user': user, "booking": booking, "truckpartner": truckpartner}) 
+                    elif booking.htype in ['1 BHK', '2 BHK', '3 BHK', '4 BHK'] and truckpartner.package_type == 'Platinum':
+                        return render(request, "home.html", {'user': user, "booking": booking, "truckpartner": truckpartner}) 
     except Exception as e:
-        print(e)
-        return redirect('tlogin')
+        print("---------------",e)
+    return render(request,"home.html")
 
+def accept(request):
+    try:
+        truckpartner = Truckpartner.objects.get(t_email = request.session['temail'])
+        
+        uemail = request.session.get('uemail')
+        user = get_object_or_404(User, uemail=uemail)
+        booking = Booking.objects.filter(userid=user).latest('razorpay_order_id')
+
+        truckpartner.on_work = True
+        truckpartner.save()
+
+        booking.statuscheck = True
+        booking.save()
+
+        uemail = request.session.get('uemail')
+        user = get_object_or_404(User, uemail=uemail)
+        booking = Booking.objects.filter(userid=user).latest('razorpay_order_id')
+        print("------------------",booking.finish_active)
+        return render(request,"accept.html",{'user':user , "booking":booking})
+    except Exception as e:
+        print('============---------------',e)
+        pass
+    return render(request,"home.html")
+        
+    
+def reject(request):
+    truckpartner = Truckpartner.objects.get(t_email = request.session['temail'])
+    truckpartner.on_work = False
+    truckpartner.save()
+    return redirect('thome')
+
+def finishride(request):
+    truckpartner = Truckpartner.objects.get(t_email = request.session['temail'])
+    truckpartner.on_work = False
+    
+    uemail = request.session.get('uemail')
+    user = get_object_or_404(User, uemail=uemail)
+    booking = Booking.objects.filter(userid=user).latest('razorpay_order_id')
+    booking.statuscheck = False
+    booking.status = 'finish'
+    truckpartner.save()
+    booking.save()
+    print("------------------------------",booking.finish_active)
+    
+    #--------------------------------------------------
+    uemail = request.session.get('uemail')
+    user = get_object_or_404(User, uemail=uemail)
+    booking = Booking.objects.filter(userid=user).latest('razorpay_order_id')
+
+    # Check if the last ride was more than 24 hours ago
+    ride = Rides.objects.get(truckpartner=truckpartner)
+
+    print(ride)
+
+    if ride.today_earning == 0:
+        ride.start_time =  timezone.now()
+        ride.expiry_time = ride.start_time + timedelta(days=1)
+        ride.save()
+
+    current_datetime = timezone.now()
+
+    if current_datetime >= ride.expiry_time:
+            # If last ride was more than 24 hours ago, reset today's earnings to 0
+        ride.today_earning = 0
+        ride.save()
+
+        # Update total_trip and total_earning
+    ride.total_trip += 1
+    ride.today_earning += booking.price
+    ride.total_earning += booking.price
+    ride.save()
+
+    print("------------------------------",booking.finish_active)
+
+    return redirect('thome')
 
 def signup(request):
     if request.POST:
@@ -113,7 +193,28 @@ def logout(request):
     return redirect("tsignup")
 
 def Mywallet(request):
-    return render(request,'Mywallet.html')
+    try:
+        truckpartner = Truckpartner.objects.get(t_email = request.session['temail'])
+        ride = Rides.objects.get(truckpartner = truckpartner)
+        print("============",ride)
+        transactions = Transactions.objects.filter(truckpartner = truckpartner)
+        a = 0
+        for i in transactions:
+            a += i.amount
+        
+        print("============",transactions)
+        current_datetime = timezone.now()
+
+        if current_datetime >= ride.expiry_time:
+            # If last ride was more than 24 hours ago, reset today's earnings to 0
+            ride.today_earning = 0
+            ride.save()
+
+        return render(request,'Mywallet.html',{'ride':ride,'transactions':transactions,'a':a})
+    except Exception as e:
+        print(e)
+        return render(request,'Mywallet.html')
+
 
 def update(request):
     if request.POST:
@@ -137,42 +238,57 @@ def update(request):
 
 def profile(request):
     truckpartner = Truckpartner.objects.get(t_email = request.session['temail'])
-    return render(request,'profile.html',{"truckpartner":truckpartner})
+    ride = Rides.objects.get(truckpartner = truckpartner)
+    current_datetime = timezone.now()
 
+    if current_datetime >= ride.expiry_time:
+            # If last ride was more than 24 hours ago, reset today's earnings to 0
+        ride.today_earning = 0
+        ride.save()
+    print(ride.today_earning)
+    return render(request,'profile.html',{"truckpartner":truckpartner , 'ride':ride})
+    
+    
+    
 def Withdrawal_funds(request):
-    return render(request,'Withdrawal_funds.html')
-"""def packages(request):
-    if request.POST:
-        try:
-            truckpartner = Truckpartner.objects.get(t_email = request.POST['email'])
-            if truckpartner:
-                price = int(request.POST.get("price"))
-                pacakge = Package.objects.create(
-                    package_name = request.POST['ptype'],
-                    price = price
-                )
-                client = razorpay.Client(auth = (settings.RAZORPAY_KEY_ID,settings.RAZORPAY_KEY_SECRET))
-                payment = client.order.create({'amount': pacakge.price * 100, 'currency': 'INR', 'payment_capture': 1})
-                pacakge.razorpay_order_id = payment['id']  
-                pacakge.save()
+    try:
+        truckpartner = Truckpartner.objects.get(t_email = request.session['temail'])
+        ride = Rides.objects.get(truckpartner = truckpartner)
 
-                context = {
-                        'payment': payment,
-                        'pacakge':pacakge,  # Ensure the amount is in paise
-                    }
-                
-                print("=======================",context)
-                print("&7777777777777777777777",payment)
-                return render(request,'payments.html',context)
+        if request.POST:
+            print("==========post")
+            if request.POST['accountno'] == request.POST["caccountno"]:
+                print("==========first",type(ride.total_earning))
+                print("==========first",type(request.POST["amount"]))
+                if ride.total_earning >= int(request.POST["amount"]):
+                    print("==========second")
+                    transactions = Transactions.objects.create(
+                        truckpartner = truckpartner,
+                        rides = ride,
+                        account_holder_name = request.POST['hname'],
+                        account_number = request.POST['accountno'],
+                        ifsc_code = request.POST['ifsc_code'],
+                        amount = request.POST['amount'],
+                    )
+
+                    ride.total_earning -= int(request.POST["amount"])
+                    ride.save()
+
+                    return redirect('Mywallet')
+                else:
+                    msg="inficiunce Balance!!"
+                    messages.error(request,msg)
+                    return render(request,'Withdrawal_funds.html')
             else:
-                return redirect('tsignup')
-        except Exception as e:
-            price(e)
-            return redirect('tsignup')
-
-    else:
-        return render(request,'packages.html')
-"""
+                msg="account number and confirm account number does not match !!"
+                messages.error(request,msg)
+                return render(request,'Withdrawal_funds.html')
+        else:
+            return render(request,'Withdrawal_funds.html')
+        
+    except Exception as e:
+        print(e)
+        return render(request,'Withdrawal_funds.html')
 
 def packages(request):
     if request.POST:
@@ -227,8 +343,41 @@ def tsuccess(request):
         truck.razorpay_payment_id= request.GET.get('razorpay_payment_id')
         print('========================================',truck.razorpay_payment_id)
         truck.save()
+
+        ride = Rides.objects.create(
+
+            truckpartner = truck
+        
+        )
+        print("---------------create ride for truckpartners",ride)
         return render(request, 'tsuccess.html')
+    
     except Exception as e:
         print(e)
         return render(request, 'tsuccess.html')
     
+def changepassword(request):
+    if request.POST:
+        truckpartner = Truckpartner.objects.get(t_email = request.session['temail'])
+        if truckpartner.t_password == request.POST["current_pass"]:
+            if request.POST["new_pass"] == request.POST["c_pass"]:
+
+                truckpartner.t_password = request.POST["new_pass"]
+                truckpartner.save()
+
+                del request.session['temail']
+                del request.session['tpassword']
+                del request.session['tname']
+                del request.session['tpicture']
+                del request.session['tcontact']
+                return redirect('tsignup')
+            else:
+                msg = "new password and confirm password does not match !!"
+                messages.error(request,msg)
+                return render(request,'changepassword.html')
+        else:
+            msg = "current password does not match !!"
+            messages.error(request,msg)
+            return render(request,'changepassword.html')
+    else:
+        return render(request,'changepassword.html')

@@ -1,88 +1,53 @@
 {% include "header.html" %}
 {% load static %}
 
-    <!--Section-->
-    <section id="hero" class=" position-relative overflow-hidden">
-        <div class="pattern-overlay pattern-right position-absolute">
-            <img src="{% static 'myapp/images/hero-pattern-right.png' %}" alt="pattern">
+<!--Section-->
+<section id="hero" class="position-relative overflow-hidden">
+    <div class="pattern-overlay pattern-right position-absolute">
+        <img src="{% static 'myapp/images/hero-pattern-right.png' %}" alt="pattern">
+    </div>
+    <div class="pattern-overlay pattern-left position-absolute">
+        <img src="{% static 'myapp/images/hero-pattern-left.png' %}" alt="pattern">
+    </div>
+    <div class="hero-content container text-center">
+        <div class="row">
+            <div class="detail mb-4">
+                <h1 class="">Contact <span class="text-primary">us</span> </h1>
+            </div>
         </div>
-        <div class="pattern-overlay pattern-left position-absolute">
-            <img src="{% static 'myapp/images/hero-pattern-left.png' %}" alt="pattern">
-        </div>
-        <div class="hero-content container text-center">
-            <div class="row">
-                <div class="detail mb-4">
-                    <h1 class="">Contact  <span class="text-primary">  us</span> </h1>
+    </div>
+</section>
+
+<!--contact form-->
+<section id="faq">
+    <div class="container my-5 py-5 ">
+        <h2 class="text-center my-5">GOT ANY QUESTIONS?<span class="text-primary"></span> </h2>
+
+        <div class="accordion col-md-6 offset-md-3" id="accordionPanelsStayOpenExample">
+            <form method="POST" action="{% url 'contact' %}" class="row g-3">
+                {% csrf_token %}
+                <div class="col-md-12">
+                    <label for="inputName" class="form-label fs-6 text-uppercase fw-bold text-black">Name</label>
+                    <input type="text" class="form-control" id="inputName" name="name" placeholder="Enter your Name">
                 </div>
-            </div>
+                <div class="col-md-12">
+                    <label for="inputEmail" class="form-label fs-6 text-uppercase fw-bold text-black">Email</label>
+                    <input type="email" class="form-control" id="inputEmail" name="email" placeholder="Enter your Email">
+                </div>
+                <div class="col-md-12">
+                    <label for="inputContactNumber" class="form-label fs-6 text-uppercase fw-bold text-black">Contact Number</label>
+                    <input type="text" class="form-control" id="inputContactNumber" name="contact_number" placeholder="Enter your Contact Number">
+                </div>
+                <div class="col-md-12">
+                    <label for="inputMessage" class="form-label fs-6 text-uppercase fw-bold text-black">Message</label>
+                    <textarea class="form-control" id="inputMessage" name="message" rows="8"></textarea>
+                </div>
+                <div class="d-grid">
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </div>
+            </form>
         </div>
-    </section>
-    
-<!--contact from-->
-    <section id="faq">
-
-        <div class="container my-5 py-5 ">
-            <h2 class=" text-center my-5">GOT ANY QUESTIONS?<span class="text-primary"></span> </h2>
-
-            
-            <div class="accordion col-md-6 offset-md-3" id="accordionPanelsStayOpenExample">
-               
-                <form class="row g-3">
-                    <div class="col-md-12">
-                        <label for="exampleInputEmail1"
-                        class="form-label fs-6 text-uppercase fw-bold text-black">Name
-                        </label>
-                      <input type="Name" class="form-control" id="inputEmail4" placeholder="Enter your Name">
-                    </div>
-                    
-                    
-                    <div class="col-md-6">
-                       
-                      </div>
-                      
-                      
-                      <div class="col-md-12">
-                        <label for="exampleInputEmail1"
-                        class="form-label fs-6 text-uppercase fw-bold text-black">Email
-                        </label>
-                        <input type="text" class="form-control"  placeholder="Enter your Email">
-                      </div>
-                      
-
-                      <div class="col-md-6">
-                       
-                      </div>
-
-                    <div class="col-md-12">
-                        <label for="exampleInputEmail1"
-                        class="form-label fs-6 text-uppercase fw-bold text-black">Contact Number
-                        </label>
-                      <input type="text" class="form-control" id="inputZip" placeholder="Enter your Contact Number">
-                    </div>
-                    <div class="col-md-6">
-                       
-                    </div>
-                
-                     <div class="col-md-12">
-                        <label for="exampleInputEmail1"
-                        class="form-label fs-6 text-uppercase fw-bold text-black">Message
-                        </label>
-                      <textarea name="" class="form-control ps-3" rows="8"></textarea>
-                    </div>
-                    <div class="col-md-6">
-                       
-                    </div>
-                    
-                    <div class="d-grid">
-
-                      <button type="submit"  class="btn btn-primary  ">Submit</button>
-                    </div>
-                  </form>
-                  
-            </div>
-            
-
-        </div>
-    </section>
+    </div>
+</section>
 
 {% include "footer.html" %}
