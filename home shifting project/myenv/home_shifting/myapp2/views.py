@@ -3,37 +3,68 @@ from django.utils import timezone
 from myapp.models import *
 from myapp2.models import *
 from django.contrib import messages
+from django.http import JsonResponse
 import razorpay
 from django.conf import settings
 
 # Create your views here.
+
+# def home(request):
+#     try:
+#         uemail = request.session.get('uemail')
+#         user = get_object_or_404(User, uemail=uemail)
+#         booking = Booking.objects.filter(userid=user).latest('razorpay_order_id')
+#         print("===========-----------------------",booking.htype)
+#         truckpartner = Truckpartner.objects.get(t_email=request.session['temail'])
+#         print(truckpartner.package_type)
+#         if truckpartner.is_online == True:
+#             if booking.statuscheck == False:
+#                 if booking.status != 'finish' and  booking.status != 'cancle':
+#                     # uemail = request.session.get('email')
+#                     # user = get_object_or_404(User, uemail=uemail)
+#                     # booking = Booking.objects.filter(userid=user).latest('razorpay_order_id')
+#                     if booking.htype in ['2 BHK'] and truckpartner.package_type in ['Silver','Gold','Platinum']:
+#                         print("----------------")
+#                         return render(request, "home.html", {'user': user, "booking": booking, "truckpartner": truckpartner})
+#                     elif booking.htype in ['1 BHK'] and truckpartner.package_type in ['Silver', 'Platinum']:
+#                         return render(request, "home.html", {'user': user, "booking": booking, "truckpartner": truckpartner}) 
+#                     elif booking.htype in ['3 BHK'] and truckpartner.package_type in ['Gold', 'Platinum']:
+#                         return render(request, "home.html", {'user': user, "booking": booking, "truckpartner": truckpartner}) 
+#                     elif booking.htype in ['1 BHK', '2 BHK', '3 BHK', '4 BHK'] and truckpartner.package_type == 'Platinum':
+#                         return render(request, "home.html", {'user': user, "booking": booking, "truckpartner": truckpartner}) 
+#                 else:
+#                     return render(request,'home.html')
+#     except Exception as e:
+#         print("---------------",e)
+#     return render(request,"home.html")
 
 def home(request):
     try:
         uemail = request.session.get('uemail')
         user = get_object_or_404(User, uemail=uemail)
         booking = Booking.objects.filter(userid=user).latest('razorpay_order_id')
-        print("===========-----------------------",booking.htype)
+        print("===========-----------------------", booking.htype)
         truckpartner = Truckpartner.objects.get(t_email=request.session['temail'])
         print(truckpartner.package_type)
         if truckpartner.is_online == True:
             if booking.statuscheck == False:
-                if booking.status != 'finish':
-                    # uemail = request.session.get('email')
-                    # user = get_object_or_404(User, uemail=uemail)
-                    # booking = Booking.objects.filter(userid=user).latest('razorpay_order_id')
-                    if booking.htype in ['2 BHK'] and truckpartner.package_type in ['Silver','Gold','Platinum']:
+                if booking.status != 'finish' and booking.status != 'cancle':
+                    if booking.htype in ['2 BHK'] and truckpartner.package_type in ['Silver', 'Gold', 'Platinum']:
                         print("----------------")
                         return render(request, "home.html", {'user': user, "booking": booking, "truckpartner": truckpartner})
                     elif booking.htype in ['1 BHK'] and truckpartner.package_type in ['Silver', 'Platinum']:
-                        return render(request, "home.html", {'user': user, "booking": booking, "truckpartner": truckpartner}) 
+                        return render(request, "home.html", {'user': user, "booking": booking, "truckpartner": truckpartner})
                     elif booking.htype in ['3 BHK'] and truckpartner.package_type in ['Gold', 'Platinum']:
-                        return render(request, "home.html", {'user': user, "booking": booking, "truckpartner": truckpartner}) 
+                        return render(request, "home.html", {'user': user, "booking": booking, "truckpartner": truckpartner})
                     elif booking.htype in ['1 BHK', '2 BHK', '3 BHK', '4 BHK'] and truckpartner.package_type == 'Platinum':
-                        return render(request, "home.html", {'user': user, "booking": booking, "truckpartner": truckpartner}) 
+                        return render(request, "home.html", {'user': user, "booking": booking, "truckpartner": truckpartner})
+                else:
+                    return render(request,'home.html')
     except Exception as e:
-        print("---------------",e)
-    return render(request,"home.html")
+        print("---------------", e)
+        return render(request,'home.html')
+
+    return render(request,'home.html')
 
 def accept(request):
     try:
@@ -64,6 +95,12 @@ def reject(request):
     truckpartner = Truckpartner.objects.get(t_email = request.session['temail'])
     truckpartner.on_work = False
     truckpartner.save()
+    reject_status = False
+    if truckpartner.on_work == False:
+        reject_status =True
+        msg = "Ride Rejected successfully."
+        messages.success(request,msg)
+        return render (request,'home.html',{'reject_status':reject_status})
     return redirect('thome')
 
 def finishride(request):

@@ -49,11 +49,11 @@ class Transactions(models.Model):
 	rides = models.ForeignKey(Rides,on_delete=models.CASCADE , null = True)
 	account_holder_name = models.CharField(max_length = 20)
 	account_number = models.PositiveIntegerField()
-	ifsc_code = models.PositiveIntegerField()
+	ifsc_code = models.CharField(max_length=20,null=True)
 	date = models.DateField(default = timezone.now)
 	amount = models.PositiveBigIntegerField(default = 0)
 
-	def __str__(self):
+	def __str__(self):	
 		return self.truckpartner.t_name 
 	
 
