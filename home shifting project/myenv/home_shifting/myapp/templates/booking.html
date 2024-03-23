@@ -1,6 +1,40 @@
 {% include "header.html" %}
 {% load static %}
 
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Signup Form</title>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script>
+      $(document).ready(function(){
+          $('#formdata').submit(function(e){
+              e.preventDefault(); // Prevent default form submission
+
+              // Collect form data
+              var formData = $(this).serialize();
+
+              // AJAX request
+              $.ajax({
+                  type: 'POST',
+                  url: '/ajax/', // URL to your Django view for handling signup
+                  data: formData,
+                  success: function(response){
+                      // Handle successful signup
+                      alert('Signup successful!');
+                      // You can redirect the user or perform other actions as needed
+                  }
+              });
+          });
+      });
+  </script>
+</head>
+
+
+
+
+
+
     <section id="hero" class=" position-relative overflow-hidden">
         <div class="pattern-overlay pattern-right position-absolute">
             <img src="{% static 'myapp/images/hero-pattern-right.pn' %}g" alt="pattern">
@@ -16,6 +50,10 @@
             </div>
         </div>
     </section>
+
+
+
+
     
 <!--booking from-->
     <section id="faq">
@@ -25,7 +63,7 @@
 
             
             <div class="accordion col-md-8 offset-md-2" id="accordionPanelsStayOpenExample">
-                <form class="row g-3" method="POST" action="{% url "booking" %}">
+                <form class="row g-3" method="POST" action="{% url "booking" %}" id="formdata">
                    {% csrf_token %}
                     <div class="col-md-12">
                       <label for="inputEmail4" class="form-label">Name</label>

@@ -1,5 +1,5 @@
 from django.db import models
-
+from django.utils import timezone
 # Create your models here.
 class User(models.Model):
     uname = models.CharField(max_length=40)
@@ -26,6 +26,7 @@ class Booking(models.Model):
     razorpay_payment_id=models.CharField(max_length=100,null=True,blank=True)
     status = models.CharField(max_length=20,choices = ORDERSTATUS,default="Booking")
     statuscheck = models.BooleanField(default = False)
+    date = models.DateTimeField(default=timezone.now)
 
     # Add flags for statuses
     house_type_active = models.BooleanField(default=False)

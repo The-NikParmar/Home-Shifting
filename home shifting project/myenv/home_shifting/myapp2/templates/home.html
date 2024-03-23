@@ -8,7 +8,7 @@
 
 <section class="form-container" >
 
-   <form>
+   <form id ='formdata'>
       {% if reject_status != True %}
       {% if booking %}
 
@@ -29,34 +29,6 @@
         <h1 style="text-align: center;">NO RIDE  AVAILABLE!</h1>
       {% endif %}
    </form>
-
-   {% comment %} <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<script>
-$(document).ready(function(){
-    function fetchRideDetails() {
-        $.ajax({
-            type: 'POST',
-            url: '/dilevry_partners/home/', // URL ko apne project ke URL ke hisaab se update karein
-            success: function(response){
-                if(response.status == 'error'){
-                    console.log('An error occurred:', response.message);
-                } else {
-                    $('.form-container').html(response);
-                }
-            },
-            error: function(xhr, errmsg, err){
-                console.log(xhr.status + ": " + xhr.responseText); // For debugging purposes
-            }
-        });
-    }
-
-    // Initially fetch ride details when the page loads
-    fetchRideDetails();
-
-    // Set an interval to fetch ride details every 4 seconds
-    setInterval(fetchRideDetails, 4000); // 4 seconds = 4000 milliseconds
-});
-</script> {% endcomment %}
 
    
 </section> 
