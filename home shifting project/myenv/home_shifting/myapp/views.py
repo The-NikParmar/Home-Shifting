@@ -14,7 +14,26 @@ import razorpay
 
 
 def index (request):
-    return render(request,'index.html')
+    if request.POST:
+        user = User.objects.get(uemail = request.session['uemail'])
+        #booking = Booking.objects.filter(userid = user).latest('razorpay_order_id')
+        book = Booking.objects.filter(userid = user)
+        #booking = [order.razorpay_order_id for order in book]
+
+        for booking in book:
+            print("======================",booking.razorpay_order_id)
+            if booking.razorpay_order_id == request.POST['razorpay_order_id']:
+                print("hello")
+                booking = get_object_or_404(Booking, pk=booking.pk)
+                print(booking)
+                context = {'booking': booking}
+                return render(request, "utrack.html",context)
+        else:
+            msg="Invalid order id"
+            messages.error(request,msg)
+            return render(request,'index.html')
+    else:
+        return render(request,'index.html')
 
 def signup(request):
     if request.POST:

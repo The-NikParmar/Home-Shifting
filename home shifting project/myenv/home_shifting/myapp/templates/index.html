@@ -49,7 +49,7 @@
 </section>
 
 <!-- search section start  -->
-{% comment %} <section id="search" >
+<section id="search" >
   <div class="container search-block p-5">
     <form class="row" method = "POST" action="{% url "index" %}">
       {% csrf_token %}
@@ -91,12 +91,14 @@
             </div>
             -->
   </div>
-</section> {% endcomment %}
+</section>
 
 <div class="progress-container">
   <div class="progress-bar" id="myBar"></div>
 </div>
-
+<br>
+<br>
+<br>
 <!-- process section start  -->
 {% comment %} <section id="process">
   <div class="process-content container">
