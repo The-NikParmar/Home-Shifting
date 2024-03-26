@@ -54,7 +54,7 @@
                             <td>{{forloop.counter}}</td>
                             <td>{{i.bname}}</td>
                             <td>{{i.htype}}</td>
-                            <td>{{i.date}}</td>
+                            <td>{{i.date|date:"d F Y" }}</td>
                             <td>{{i.movefrom}}</td>
                             <td>{{i.moveto}}</td>
                             <td>{{i.state}}</td>
@@ -62,18 +62,15 @@
                             <td>{{i.price}}</td>
                             <td>{{i.razorpay_order_id}}</td>
                             <td>{{i.razorpay_payment_id}}</td>
-                            <td><a href="{% url "utrack" pk=i.pk %}" class="btn btn-success" title="Track Status">CheckStatus</a></td>
+                            <td><a href="{% url "utrack" pk=i.pk %}" class="btn btn-success" title="Track Status">Check Status</a></td>
                             <td><a href="{% url 'cancle' pk=i.pk %}" class="btn btn-danger" title="Track Status">Cancle</a></td>
                             
-                            
-                           
                         </tr>
                         {% endfor %}
                         
                     </tbody>
                 </table>
-            </div>
-                 
+            </div>   
         </div>
     </div>
 </div>

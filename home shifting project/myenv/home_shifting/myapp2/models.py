@@ -29,6 +29,7 @@ class Truckpartner(models.Model):
 	
 		
 	def __str__(self):
+		693
 		return self.t_name
 	
 
