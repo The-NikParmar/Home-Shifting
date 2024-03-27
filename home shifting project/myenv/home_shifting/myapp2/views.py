@@ -9,34 +9,7 @@ from django.conf import settings
 
 # Create your views here.
 
-# def home(request):
-#     try:
-#         uemail = request.session.get('uemail')
-#         user = get_object_or_404(User, uemail=uemail)
-#         booking = Booking.objects.filter(userid=user).latest('razorpay_order_id')
-#         print("===========-----------------------",booking.htype)
-#         truckpartner = Truckpartner.objects.get(t_email=request.session['temail'])
-#         print(truckpartner.package_type)
-#         if truckpartner.is_online == True:
-#             if booking.statuscheck == False:
-#                 if booking.status != 'finish' and  booking.status != 'cancle':
-#                     # uemail = request.session.get('email')
-#                     # user = get_object_or_404(User, uemail=uemail)
-#                     # booking = Booking.objects.filter(userid=user).latest('razorpay_order_id')
-#                     if booking.htype in ['2 BHK'] and truckpartner.package_type in ['Silver','Gold','Platinum']:
-#                         print("----------------")
-#                         return render(request, "home.html", {'user': user, "booking": booking, "truckpartner": truckpartner})
-#                     elif booking.htype in ['1 BHK'] and truckpartner.package_type in ['Silver', 'Platinum']:
-#                         return render(request, "home.html", {'user': user, "booking": booking, "truckpartner": truckpartner}) 
-#                     elif booking.htype in ['3 BHK'] and truckpartner.package_type in ['Gold', 'Platinum']:
-#                         return render(request, "home.html", {'user': user, "booking": booking, "truckpartner": truckpartner}) 
-#                     elif booking.htype in ['1 BHK', '2 BHK', '3 BHK', '4 BHK'] and truckpartner.package_type == 'Platinum':
-#                         return render(request, "home.html", {'user': user, "booking": booking, "truckpartner": truckpartner}) 
-#                 else:
-#                     return render(request,'home.html')
-#     except Exception as e:
-#         print("---------------",e)
-#     return render(request,"home.html")
+
 
 def home(request):
     try:

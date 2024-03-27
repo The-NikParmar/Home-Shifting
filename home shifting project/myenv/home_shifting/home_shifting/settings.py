@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 
 from pathlib import Path
 import os
+from .juzzmin import JAZZMIN_SETTINGS
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -140,3 +141,6 @@ RAZORPAY_KEY_SECRET = '162cebPFC0tUFlWw99PsxZp1'
 # you will solve the issue  about:blank#blocked which occassionaly occurs in django pop ups
 
 SECURE_CROSS_ORIGIN_OPENER_POLICY = "same-origin-allow-popups"
+
+
+JAZZMIN_SETTINGS = JAZZMIN_SETTINGS

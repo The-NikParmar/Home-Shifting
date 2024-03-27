@@ -17,7 +17,7 @@ def export_to_pdf(modeladmin, request, queryset):
     # Generate the report using ReportLab
 
     # Custom page size (width, height)
-    custom_page_size = (600, 600)
+    custom_page_size = (900, 600)
     doc = SimpleDocTemplate(response, pagesize=custom_page_size)
     elements = []
 
@@ -36,8 +36,8 @@ def export_to_pdf(modeladmin, request, queryset):
 
     # Create the table headers
     #headers = ['uname', 'uemail', 'ucontact','upassword']
-    #headers = ['htype', 'bname', 'movefrom','moveto','state','zipcode','price','razorpay_order_id','razorpay_payment_id','date']
-    headers = ['name', 'email', 'contact_number','message']
+    headers = ['htype', 'bname', 'movefrom','moveto','state','zipcode','price','razorpay_order_id','razorpay_payment_id','date']
+    #headers = ['name', 'email', 'contact_number','message']
 
     #Create the table data
     data = []
@@ -45,11 +45,11 @@ def export_to_pdf(modeladmin, request, queryset):
         #  data.append([obj.uname, obj.uemail,
         #  obj.ucontact,obj.upassword])
 
-        # data.append([obj.htype,obj.bname,
-        # obj.movefrom,obj.moveto,obj.state,obj.zipcode,obj.price,obj.razorpay_order_id,obj.razorpay_payment_id,obj.date])
+         data.append([obj.htype,obj.bname,
+         obj.movefrom,obj.moveto,obj.state,obj.zipcode,obj.price,obj.razorpay_order_id,obj.razorpay_payment_id,obj.date])
            
-           data.append([obj.name, obj.email,
-           obj.contact_number,obj.message])
+        #    data.append([obj.name, obj.email,
+        #    obj.contact_number,obj.message])
         
     # Create the table
     t = Table([headers] + data, style=style)
