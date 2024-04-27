@@ -25,22 +25,22 @@
                 <div class="col-md-7 offset-md-1 mt-5">
                     <ul class="footer-nav list-unstyled ">
                         <li class="nav-item me-2 mb-3">
-                            <a class="nav-link px-4" aria-current="page" href="index.html">Home</a>
+                            <a class="nav-link px-4" aria-current="page" href="{% url "index" %}">Home</a>
                         </li>
                         <li class="nav-item me-2 mb-3">
-                            <a class="nav-link px-4" href="booking.html">Booking</a>
+                            <a class="nav-link px-4" href="{% url "booking" %}">Booking</a>
                         </li>
                         <li class="nav-item me-2 mb-3">
-                            <a class="nav-link px-4" href="about.html">About</a>
+                            <a class="nav-link px-4" href="{% url "about" %}">About</a>
                         </li>
                         <li class="nav-item me-2 mb-3">
-                            <a class="nav-link px-4" href="truck.html">Vehicals</a>
+                            <a class="nav-link px-4" href="{% url "vehical" %}">Vehicles</a>
                         </li>
                         <li class="nav-item me-2 mb-3">
-                            <a class="nav-link px-4" href="index.html#services">Services</a>
+                            <a class="nav-link px-4" href="{% url "service" %}">Services</a>
                         </li>
                         <li class="nav-item me-2 mb-3">
-                            <a class="nav-link px-4" href="contact.html">Contact</a>
+                            <a class="nav-link px-4" href="{% url "user_contact" %}">Contact</a>
                         </li>
                     </ul>
                 </div>

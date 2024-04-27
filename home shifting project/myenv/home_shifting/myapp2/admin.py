@@ -42,9 +42,9 @@ def export_to_pdf(modeladmin, request, queryset):
     # Create the table headers
     
     #headers = ['Name', 'email', 'Contact No','Package','start_date','end_date']
-    #headers = ['name', 'email', 'contact_number','message']
+    headers = ['name', 'email', 'contact_number','message']
     #headers = ['truckpartner', 'account_holder_name', 'account_number','ifsc_code','date','amount']
-    headers = ['truckpartner', 'total_trip', 'today_earning','total_earning']
+    #headers = ['truckpartner', 'total_trip', 'today_earning','total_earning']
 
     #Create the table data
     data = []
@@ -52,17 +52,14 @@ def export_to_pdf(modeladmin, request, queryset):
         # data.append([obj.t_name, obj.t_email,
         # obj.t_contact,obj.package_type, obj.start_date,obj.end_date])
 
-        # data.append([obj.htype,obj.bname,
-        # obj.movefrom,obj.moveto,obj.state,obj.zipcode,obj.price,obj.razorpay_order_id,obj.razorpay_payment_id,obj.date])
-           
-        # data.append([obj.name, obj.email,
-        # obj.number,obj.message])
+        data.append([obj.name, obj.email,
+        obj.number,obj.message])
 
         # data.append([obj.truckpartner, obj.account_holder_name,
         # obj.account_number,obj.ifsc_code, obj.date,obj.amount])
 
-        data.append([obj.truckpartner, obj.total_trip,
-        obj.today_earning,obj.total_earning])
+        # data.append([obj.truckpartner, obj.total_trip,
+        # obj.today_earning,obj.total_earning])
         
     # Create the table
     t = Table([headers] + data, style=style)

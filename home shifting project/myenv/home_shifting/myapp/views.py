@@ -2,6 +2,8 @@ from django.shortcuts import render,redirect,HttpResponse,get_object_or_404
 from .models import *
 from django.contrib import messages
 from django.contrib.auth import authenticate,login,logout
+from django.template.loader import render_to_string
+from django.utils.html import strip_tags
 from django.views.decorators.csrf import csrf_exempt
 from django.core.mail import send_mail
 from django.http import JsonResponse
@@ -197,7 +199,8 @@ def resetpass(request):
          return render(request,'resetpass.html')
        
 def booking(request):
-    if 'uemail' in request.session:
+    # if 'uemail' in request.session:
+    try:
         if request.POST:
             userid = User.objects.get(uemail=request.session['uemail'])
             price = int(request.POST.get('price'))
@@ -234,10 +237,10 @@ def booking(request):
             return render(request, 'payment.html',context)
         else:
             return render(request, "booking.html")
-    else:
-        messages.info(request, "Please login now.........")
-        return render(request, "booking.html")
-
+    except:
+        messages.info = "Login now"
+        return render(request,'index.html')
+       
 
 def payments(request):
     return render (request,"payment.html")
@@ -249,19 +252,25 @@ def success(request):
    if uemail:
         user = get_object_or_404(User, uemail=uemail)
         booking = Booking.objects.filter(userid=user).latest('razorpay_order_id')
-
+        print("=================================")
         razorpay_payment_id = request.GET.get('razorpay_payment_id')
-
-        if razorpay_payment_id:
+       
+        if razorpay_payment_id != "":
             # Update the booking instance with the Razorpay payment ID
             booking.razorpay_payment_id = razorpay_payment_id
             booking.save()
 
-        return render(request, 'success.html')
+            return render(request,'success.html')
+        else:
+            msg= "Please Book Ride Again Payment are not store....."
+            messages.info(request,msg)
+            booking.delete()
+            return redirect("index")
    else:
         msg= "Please login....."
         messages.info(request,msg)
         return render(request,"index.html")
+
 
 def vehical (request):  
     return render(request,'vehical.html')
@@ -300,15 +309,59 @@ def utrack(request, pk):
     print(context)
     return render(request, "utrack.html", context)
 
-def cancle(request,pk):
-    booking = Booking.objects.get(pk=pk)
+def mymail(subject, template, to, context,order_id):
+    subject = subject
+    template_str = template +'.html'
+    context['order_id'] = order_id
+    html_message = render_to_string(template_str, context)
+    plain_message = strip_tags(html_message)
+    from_email = 'parmarnik1015@gmail.com'
+    send_mail(
+        subject,
+        plain_message,
+        from_email,
+        [to],
+        html_message=html_message,
+        fail_silently=False,
+    )
 
+def cancle(request,pk):
+    uemail = request.session.get('uemail')
+    booking = Booking.objects.get(pk=pk)
+    user = get_object_or_404(User,uemail=uemail)
     # Check if the booking is not already canceled
     if booking.status != 'cancel':
+        if booking.status != 'finish':
         # Set the status to 'cancel'
-        booking.status = 'cancel'
-        booking.save()
+            booking.status = 'cancel'
+            booking.save()
+            if booking.status == 'cancel':
+                    # Update the booking instance with the Razorpay payment ID
+                    subject = 'booking cancel successfully'
+                    template = "cancel_email"
+                    to = user.uemail
+                    context = {'user':user.uname}
+                    order_id = booking.razorpay_order_id
+                    mymail(subject, template, to, context,order_id)
+                    print('======================send successfully')
+                    msg="Booking Cancel Successfully"
+                    messages.success(request,msg)
 
-    # Redirect back to the user's bookings page
-    return redirect('mybookings')
+                    # Redirect back to the user's bookings page
+                    return redirect('mybookings')
+                
+        else:
+            msg="Booking Already Finished"
+            messages.info(request,msg)
+            # Redirect back to the user's bookings page
+            return redirect('mybookings')
+    else:
+        msg="Booking Already Cancel"
+        messages.error(request,msg)
+        # Redirect back to the user's bookings page
+        return redirect('mybookings')
+    
 
+
+
+   

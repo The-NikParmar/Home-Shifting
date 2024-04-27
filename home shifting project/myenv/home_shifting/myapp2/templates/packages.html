@@ -53,7 +53,7 @@
                 <div class="offcanvas-body">
                     <ul class="navbar-nav align-items-center justify-content-end flex-grow-1 pe-3">
                         <li class="nav-item">
-                            <a class="nav-link active px-3" aria-current="page" href="">Home</a>
+                            <a class="nav-link active px-3" aria-current="page" href="{% url "tsignup" %}">Home</a>
                         </li>
                     </ul>
                 </div>
@@ -90,7 +90,7 @@
                    {% csrf_token %}
                     
                     <div class="col-md-12">
-                      <label for="inputEmail4" class="form-label">Select House Type</label>
+                      <label for="inputEmail4" class="form-label">Select Package Type</label>
                       <select class="form-select form-control p-3" id="ptype" aria-label="Default select example" style="background-image: none;" name="ptype" required>
                           <option value="" data-price="0" data-vehicle="0">Select House type</option>
                           <option value="Silver" data-price="10000" data-vehicle="6x7">Silver</option>
