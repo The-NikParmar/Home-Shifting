@@ -134,7 +134,7 @@ def forget_pswd(request):
 
             url = "https://www.fast2sms.com/dev/bulkV2"
             querystring = {
-                           "authorization":"49df8FP3OhnqKAuB6OcTLAAEMmfB23tmRFHiDFZRZ7zrpONWyuhl6B3wFteN",
+                           "authorization":"ZSRdIB39HUDCZOupLH6fGjPCbrghH5jr0ft5EX55VW4D8YOtkyYY5zVYyleR",
                            "variables_values":str(otp),
                            "route":"otp",
                            "numbers":mobile
@@ -247,29 +247,30 @@ def payments(request):
 
 
 def success(request):
-   uemail = request.session.get('uemail')
+   try:
+        uemail = request.session.get('uemail')
 
-   if uemail:
-        user = get_object_or_404(User, uemail=uemail)
-        booking = Booking.objects.filter(userid=user).latest('razorpay_order_id')
-        print("=================================")
-        razorpay_payment_id = request.GET.get('razorpay_payment_id')
-       
-        if razorpay_payment_id != "":
-            # Update the booking instance with the Razorpay payment ID
-            booking.razorpay_payment_id = razorpay_payment_id
-            booking.save()
+        if uemail:
+                user = get_object_or_404(User, uemail=uemail)
+                booking = Booking.objects.filter(userid=user).latest('razorpay_order_id')
+                print("=================================")
+                razorpay_payment_id = request.GET.get('razorpay_payment_id')
+            
+                if razorpay_payment_id != "":
+                    # Update the booking instance with the Razorpay payment ID
+                    booking.razorpay_payment_id = razorpay_payment_id
+                    booking.save()
 
-            return render(request,'success.html')
-        else:
-            msg= "Please Book Ride Again Payment are not store....."
-            messages.info(request,msg)
-            booking.delete()
-            return redirect("index")
-   else:
-        msg= "Please login....."
-        messages.info(request,msg)
-        return render(request,"index.html")
+                    return render(request,'success.html')
+                else:
+                    msg= "Please Book Ride Again Payment are not store....."
+                    messages.info(request,msg)
+                    booking.delete()
+                    return redirect("index")
+   except:
+                msg= "Please login....."
+                messages.info(request,msg)
+                return render(request,"index.html")
 
 
 def vehical (request):  
