@@ -28,6 +28,7 @@ JAZZMIN_SETTINGS = {
 
     # Copyright on the footer
     "copyright": "HOME SHIFTING",
+    https://docs.google.com/document/d/10n4B04wcJfa8PBVARSHo3aj6Wwk4Z2JQZg8WLSwQVjM/edit
 
     # List of model admins to search from the search bar, search bar omitted if excluded
     # If you want to use a single search field you dont need to use a list, you can use a simple string 
